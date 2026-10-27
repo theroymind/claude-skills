@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "theroymind",
+  "description": "Eric Roy's personal Claude Code plugins",
+  "owner": {
+    "name": "Eric Roy"
+  },
+  "plugins": [
+    {
+      "name": "workflow",
+      "description": "Cross-project engineering workflow skills: spec, plan, implement, test, review, ship",
+      "source": "./plugins/workflow",
+      "category": "productivity"
+    }
+  ]
+}
