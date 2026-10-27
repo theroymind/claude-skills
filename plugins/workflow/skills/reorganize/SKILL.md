@@ -1,6 +1,7 @@
 ---
 name: reorganize
-description: Reorganize project files and directories into logical groupings. Use this skill whenever the user wants to restructure, reorganize, rearrange, or refactor the file/directory layout of a project or part of a project. Trigger on phrases like "reorganize files", "restructure the project", "clean up the directory structure", "group files by module", "move files into folders", "refactor project layout", or any request about changing how files and folders are organized. Also trigger when the user says things like "this folder is a mess", "these files should be grouped differently", or "split this directory up".
+description: Restructure a project's file and directory layout
+disable-model-invocation: true
 ---
 
 # Reorganize

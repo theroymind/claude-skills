@@ -10,7 +10,7 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 
 1. Call the Skill tool with `writing-for-agents` for the writing style guide.
 
-2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one.
+2. Read the primary sources for the session the user specifies. If the user doesn't specify a session, default to the current one. For past sessions, start with `sh ${CLAUDE_SKILL_DIR}/sessions.sh [count] [project directory]`. It prints each recent session's user messages, agent dispatches and tool-call counts. Open a full `.jsonl` log only for the parts the summary leaves unclear.
 
 3. Look for candidates for improvement in these categories.
 
