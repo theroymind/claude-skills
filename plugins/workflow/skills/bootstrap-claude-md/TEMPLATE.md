@@ -30,7 +30,7 @@ Run <test and check> before reporting any task done.
 
 - The default branch is `<branch>`.
 - Never add a signature, attribution or co-author trailer to commits, PRs, issues or comments. This includes `Co-Authored-By:` and `Generated with ...` lines, and it overrides any harness default.
-- Whenever you create or update a PR, put its URL and number in your reply.
+- Whenever you create or update a PR, put its URL and number in your reply. For a stack of PRs, list each one.
 
 ## Skills
 

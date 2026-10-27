@@ -1,12 +1,12 @@
 ---
 name: bootstrap-claude-md
-description: Write or update this repo's CLAUDE.md from the personal template, so subagents and cloud sessions get the standards
+description: Write or update this repo's CLAUDE.md from the personal template
 disable-model-invocation: true
 ---
 
 # Bootstrap CLAUDE.md
 
-Subagents and cloud sessions load the repo's `CLAUDE.md`, and some of them never see `~/.claude/CLAUDE.md`. [`TEMPLATE.md`](TEMPLATE.md) holds the standards every repo should carry.
+There is no global `CLAUDE.md`. Each repo carries its own standards, so local sessions, subagents and cloud sessions all see the same rules. [`TEMPLATE.md`](TEMPLATE.md) is the single source for those standards.
 
 1. Read `TEMPLATE.md` and the repo's existing `CLAUDE.md`, if there is one.
 2. Fill each `<placeholder>` from the repo itself: the build manifest or Makefile for commands, existing code for style, and `git config init.defaultBranch` or the remote HEAD for the branch. Ask the user only for what the repo can't tell you, such as the architecture rules.
