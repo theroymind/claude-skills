@@ -7,9 +7,9 @@
   },
   "plugins": [
     {
-      "name": "workflow",
+      "name": "kit",
       "description": "Cross-project engineering workflow skills: spec, plan, implement, test, review, ship",
-      "source": "./plugins/workflow",
+      "source": "./plugins/kit",
       "category": "productivity"
     }
   ]

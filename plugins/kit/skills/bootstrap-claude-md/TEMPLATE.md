@@ -34,4 +34,4 @@ Run <test and check> before reporting any task done.
 
 ## Skills
 
-Workflow skills come from the `workflow@theroymind` plugin, enabled in `.claude/settings.json`. Put skills that only this project needs in `.claude/skills/`. When a skill refers to another skill or a file that doesn't exist here, skip that reference and continue. Don't put source citations or URLs in code. Cite documentation in your reply instead. Check local sources before the web: <where this stack's local docs live>.
+Shared skills come from the `kit@theroymind` plugin, enabled in `.claude/settings.json`. Put skills that only this project needs in `.claude/skills/`. When a skill refers to another skill or a file that doesn't exist here, skip that reference and continue. Don't put source citations or URLs in code. Cite documentation in your reply instead. Check local sources before the web: <where this stack's local docs live>.
