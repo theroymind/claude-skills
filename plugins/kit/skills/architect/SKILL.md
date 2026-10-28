@@ -21,6 +21,39 @@ Store<T>   { capacity: T → int, held: T → int, reserved: T → int }
 
 `ref X` is a reference that survives storage moves, `maybe X` is optional, `A → B` is a mapping or, after a module name, its dependencies, `one of` is a tagged union, `<T>` is a generic parameter. Drop into the project's own syntax only where a decision turns on a language feature (generics, ownership, unions, interfaces).
 
+## Layout
+
+The overview is read in a terminal, where long aligned lines wrap and lose their columns. Use markdown tables and lists, never space-aligned text:
+
+```markdown
+### Modules
+| Module | Depends on | Owns |
+|---|---|---|
+| `jobs` | hotel | Job, Job_Board, posting and claiming |
+| `crew` | jobs, navigation, hotel, economy | Crew, hire, fire, crew AI, wages |
+
+### Types
+| Type | Shape | Notes |
+|---|---|---|
+| `Site` | `+= crew: Pool<Crew>, jobs: Job_Board` | |
+| `Crew_State` | `one of: Idle \| Walking { job } \| Working { job, remaining }` | |
+| `Room` | `+= clean_job: maybe ref Job` | one Clean job per room, no board scan |
+
+### Flows
+1. **Tick order:** commands → clock → dirt → arrivals → guests → crew → movement
+2. **Room gets cleaned:** dirt passes threshold → `post_job` → idle crew claims → walks → works → job removed
+
+### Decisions
+1. **Where does the claim live?**
+   - **a.** On `Job_Board` as `ref Job → maybe ref Crew` — board stays the one source of truth *(recommended)*
+   - **b.** On `Job` as `claimed_by` — simpler, but every job type carries it
+```
+
+- One row per module or type; `+=` marks fields added to an existing type. Put the reason or a decision cross-reference in Notes, not inline.
+- Escape `|` as `\|` inside table cells.
+- Short lists (commands, balance constants) go in a bullet each, not one long line.
+- Each decision is a question, its options lettered beneath it, the recommendation marked.
+
 ## Steps
 
 1. **Read the vision.** Collect what comes after this work from the spec, intent docs, roadmap, later plan phases, and the conversation. Write it as a list of named future features (e.g. "co-op", "second map", "tier 3 guests"). Read the existing code's types too, so the shape extends them. If the vision is thin, ask the user where this is heading before sketching. Done when every future feature that could touch this work is named.
@@ -38,7 +71,7 @@ Store<T>   { capacity: T → int, held: T → int, reserved: T → int }
    - Flag any generic shape with a single consumer and no named future one.
    - Hold every dependency arrow in the module map to the **Boundaries** rules below.
 
-4. **Present.** Show the overview, then number the decisions where a real choice exists: 2–3 options each, the trade-off measured against the named future features, and a recommendation. Make each one answerable in a single line.
+4. **Present.** Show the overview in the **Layout** below, then number the decisions where a real choice exists: 2–3 options each, the trade-off measured against the named future features, and a recommendation. Make each one answerable in a single line (`1a, 2b`).
 
 5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project says otherwise), each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
 
