@@ -11,7 +11,7 @@ You are the **coordinator**. Implementation agents write the code. You pick the 
 
 ## Loop
 
-1. **Find the task.** Use `$ARGUMENTS` if given. Otherwise take the first unchecked task in the project's task list (the one `CLAUDE.md` points to, usually `tasks/todo.md`). Tell the user which task you picked, in one line.
+1. **Find the task.** Use `$ARGUMENTS` if given. Otherwise take the first unchecked task in the project's task list (the one `CLAUDE.md` points to, usually `tasks/todo.md`). Tell the user which task you picked, in one line. If the task creates new modules, core types or boundaries and the plan's `## Code Shape` doesn't cover them, run `architect` scoped to this task first, and continue only once the user has answered its decisions.
 2. **Slice it.** Read the task and the parts of the plan it cites. Split it into thin slices along real boundaries, for example simulation or core logic first, then the UI or client on top of it. A slice that depends on another slice's output runs after it. Independent slices can run in parallel.
 3. **Dispatch** one general-purpose agent per slice, using the brief below.
 4. **Verify** each report. Run the repo's test and check commands yourself. Then dispatch a review agent with the slice's scope and its diff (`git diff`). It runs the built-in `code-review` skill, applies every rule in the repo's `CLAUDE.md`, flags anything outside the slice's scope, and reports findings without editing. Send gate failures and real findings back to the implementing agent with SendMessage rather than fixing them yourself, then verify again.
@@ -24,7 +24,7 @@ You are the **coordinator**. Implementation agents write the code. You pick the 
 Subagents load the repo's `CLAUDE.md` on their own. The brief points to it and spends its length on what `CLAUDE.md` can't know:
 
 - **Where**: the repo path, and a note that this is slice N of task X.
-- **Read first**: the task entry, the plan sections it cites, and the existing files to build on, with the procedures and types they should reuse.
+- **Read first**: the task entry, the plan sections it cites, the parts of `## Code Shape` this slice implements, and the existing files to build on, with the procedures and types they should reuse. The Code Shape is the contract: the agent builds those types and boundaries as written.
 - **Scope**: numbered changes, each concrete enough to check off.
 - **Out of scope**: the other slices, later tasks, and files this slice must leave alone.
 - **Open decisions**: the questions the plan leaves open. The agent picks the simplest sound option and reports it. If the plan's shape doesn't fit, the agent stops and reports that rather than working around it.

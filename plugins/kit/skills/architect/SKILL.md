@@ -73,9 +73,11 @@ The overview is read in a terminal, where long aligned lines wrap and lose their
 
 4. **Present.** Show the overview in the **Layout** below, then number the decisions where a real choice exists: 2–3 options each, the trade-off measured against the named future features, and a recommendation. Make each one answerable in a single line (`1a, 2b`).
 
-5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project says otherwise), each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
+5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project says otherwise), or under `### Task N` inside it when the shape covers one task, each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
 
-**Done when** the user has answered every numbered decision, every generic shape names its consumers, and the overview covers every type the tasks will create. Then run `breakdown` against the recorded shape.
+6. **Hand off.** When no task list covers this work yet, run `breakdown` against the recorded shape. When the shape is for a task already in the task list, suggest `/coordinate <task>` to delegate it, and end your turn.
+
+**Done when** the user has answered every numbered decision, every generic shape names its consumers, the overview covers every type the tasks will create, and the shape is recorded.
 
 ## Boundaries
 
