@@ -3,9 +3,11 @@ name: debug
 description: Root-cause debugging. Use when a test fails, a build breaks, something that worked has stopped working, behaviour doesn't match expectations, or an unexpected error appears.
 ---
 
-# Debugging
+# Debug
 
-When something breaks, stop feature work and keep the evidence: error output, logs and repro steps. Don't build on a failing test or a broken build. Work through the steps in order.
+When something breaks, stop feature work and keep the evidence: error output, logs and repro steps. Build nothing on a failing test or a broken build.
+
+## Steps
 
 1. **Reproduce.** Make it fail on demand with the repository's focused-test command (see `tdd`). Run the failing test on its own to rule out interference from other tests. If it won't reproduce, work out which kind of failure it is:
    - *Timing*: add timestamps around the suspect area, widen race windows with delays, run under load.
@@ -18,7 +20,7 @@ When something breaks, stop feature work and keep the evidence: error output, lo
 5. **Guard.** Add a regression test that fails without the fix and passes with it.
 6. **Verify.** Run the focused test, the full suite and the build, then check the original scenario end to end.
 
-Done when you can state the root cause, the regression test exists, and the full suite and build pass. Keep the fix free of unrelated changes, so it stays clear what fixed the bug.
+Keep the fix free of unrelated changes, so it stays clear what fixed the bug.
 
 ## Triage hints
 
@@ -27,3 +29,7 @@ Done when you can state the root cause, the regression test exists, and the full
 - **Runtime.** For a `null` or `undefined` access, trace where the value comes from. For a network or CORS error, check the URL, headers and server config. For a blank screen, check the error boundary and the console. For wrong behaviour with no error, log the data at each step.
 
 Take temporary logging out once the regression test guards the fix, and always remove logs that contain sensitive data. Error boundaries and error logging that records request context stay.
+
+## Done when
+
+You can state the root cause, the regression test exists, and the full suite and build pass.

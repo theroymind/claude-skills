@@ -83,7 +83,7 @@ Imagine the idea has already failed. Work backwards:
 3. For each failure mode: Is this preventable? Is this a signal the idea needs to change?
 4. Which failure modes are you willing to accept? Which ones would kill the project?
 
-**Best for:** Phase 2 evaluation. Stress-testing ideas that feel good but haven't been pressure-tested.
+**Best for:** Stress-testing a direction. Stress-testing ideas that feel good but haven't been pressure-tested.
 
 ## Analogous Inspiration
 
@@ -96,4 +96,4 @@ Look at how other domains solved similar problems:
 
 The key is finding *structural* similarities, not surface-level ones. "Uber for X" is surface-level. "A two-sided marketplace that solves a trust problem between strangers" is structural.
 
-**Best for:** Phase 1 expansion. Generating variations that feel genuinely different from the obvious approach.
+**Best for:** Expanding the variations. Generating variations that feel genuinely different from the obvious approach.

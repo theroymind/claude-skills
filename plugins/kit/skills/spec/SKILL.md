@@ -1,87 +1,64 @@
 ---
 name: spec
-description: Writes the spec for a chosen direction (objective, scope, success criteria and boundaries) and saves it before any code. Use when starting a new project, feature or significant change that has no spec yet, or when one request bundles several independently testable capabilities that need a capability map first.
+description: Writes the spec for a chosen direction (objective, success criteria and scope) and saves it before any code. Use when starting a feature, project or significant change that has no spec yet, or when one request bundles several independently shippable capabilities.
 ---
 
-# Spec-Driven Development
+# Spec
 
-The spec is the shared source of truth for what we're building, why, and how we'll know it's done, agreed before any code is written. Skip it for one-line fixes and for changes that are unambiguous and self-contained. A simple change still gets a two-line spec with acceptance criteria.
+The spec is the agreed record of what we're building, for whom, and how we'll know it's done. Skip it for one-line fixes and for unambiguous, self-contained changes. Project facts (stack, commands, conventions) belong in `CLAUDE.md` and the code's shape in `architect`'s Code Shape, so a spec holds neither. If the project already uses OpenSpec or another spec system, keep its format and storage.
 
-If the project already uses OpenSpec or another spec system, keep that system's format and storage. This skill still owns the clarifying questions, the content and the approval gates.
+## Steps
 
-## Phase 0: Scope check, for bundled capabilities only
+1. **Gather** the inputs: `align`'s intent statement and `refine`'s direction, from the conversation, `docs/intent/` or `docs/ideas/`. When who it's for, why, or what done means is still unknown, run `align` first.
+2. **Split** a bundled request. When it holds capabilities that ship and test independently (their own consumers or data, acceptance criteria that fall into separate groups, one part you could cut without rewriting the others), propose a Capability map and get it approved with `AskUserQuestion` before writing any spec. Then run the remaining steps once per capability, in dependency order.
+3. **Surface assumptions** about whatever the inputs leave open (platform, data, auth, existing patterns), and ask about the uncertain ones with `AskUserQuestion`, your assumption as the recommended option. Fill no ambiguity in silently.
+4. **Make criteria testable.** "Make the dashboard faster" becomes "LCP under 2.5s on 4G, initial data load under 500ms". Confirm any target you chose.
+5. **Write** the spec from the Template and save it as `SPEC.md`, or `SPEC-<capability-id>.md` beside a capability map.
+6. **Approve.** Summarize the spec and its open questions, then ask with `AskUserQuestion`: approve and continue to `architect`, or request changes. Start no `architect` work and no code until it is approved.
 
-Most requests describe one capability; for those, go straight to Phase 1. Break the request down first when it bundles capabilities that can be tested independently. Signs of that: the capabilities have their own consumers or data (identity, billing, notifications), the acceptance criteria fall into groups that could ship separately, or one part could be cut without rewriting the others.
+## Template
 
-Propose a capability map, not a project plan:
+```markdown
+# Spec: <feature>
+
+## Objective
+<What we're building, for whom, and why now. User stories where they help.>
+
+## Success Criteria
+- [ ] <specific, testable condition>
+
+## Out of Scope
+- <thing> — <reason>
+
+## Constraints
+<Limits the work must respect: budgets, compatibility, data rules, and changes to ask about first, such as schema changes or new dependencies.>
+
+## Open Questions
+- <question that needs human input>
+```
+
+## Capability map
 
 ```markdown
 # Capability Map: <initiative>
 
-| Module id | Responsibility | Depends on |
+| Id | Responsibility | Depends on |
 |---|---|---|
 | identity | Accounts, sessions, SSO | — |
 | billing | Plans, invoices, payments | identity |
 | notifications | Email and webhook fan-out | identity |
-| reporting | Usage dashboards | billing, notifications |
 
-Build order: identity → billing, notifications → reporting
+Build order: identity → billing, notifications
 ```
 
-- Module ids are kebab-case and never renamed mid-initiative. Specs and later skills pick work by these ids.
-- Dependencies point one way. Two modules that need each other are one module.
-- The contract between two modules belongs in the provider module's spec, and `architect` shapes it.
+- **Ids** are kebab-case and never renamed mid-initiative. Later skills pick work by them, and `architect` uses them as module names.
+- **Dependencies** point one way. Two capabilities that need each other are one capability.
+- **Storage**: the map at the project root, each capability's spec beside it. The map is the index of which specs exist.
 
-The human approves the map before any module spec is written. Then run spec → `architect` → `breakdown` → `build` for each module in dependency order. Save the map at the project root and each module's spec next to it as `SPEC-<module-id>.md`. The map is the index of which specs exist.
+## Keeping it current
 
-## Phase 1: Specify
+When a decision or the scope changes, update the spec first, then the code. Commit the spec with the code, and link each PR to the spec section it implements.
 
-1. **Surface your assumptions** before writing any spec content, and ask the human to correct them:
-   ```
-   ASSUMPTIONS I'M MAKING:
-   1. This is a web application, not native mobile
-   2. Authentication uses session cookies, not JWT
-   3. The database is PostgreSQL (from the existing Prisma schema)
-   → Correct me now or I'll proceed with these.
-   ```
-   Ask clarifying questions until the requirements are concrete. Never fill in an ambiguity silently.
-2. **Turn vague requirements into testable criteria.** "Make the dashboard faster" becomes "LCP under 2.5s on 4G, initial data load under 500ms, CLS under 0.1. Are these the right targets?"
-3. **Write the spec** from the template below and save it in the repository (`SPEC.md` unless the project says otherwise). Commands are complete, with their flags. Code Style is one real snippet plus the key conventions, not paragraphs of description.
-4. **Stop.** Summarize the spec, list its open questions, ask the human to approve it or request changes, and end your turn. Don't run `architect` or `breakdown`, or write code, until the human approves in a later turn.
+## Done when
 
-```markdown
-# Spec: <project or feature>
-
-## Objective
-<What we're building, why, and for whom. User stories or acceptance criteria.>
-
-## Tech Stack
-<Framework, language, key dependencies with versions>
-
-## Commands
-<Build, test, lint, dev: full commands>
-
-## Project Structure
-<Directory layout with what lives where>
-
-## Code Style
-<One example snippet and the key conventions>
-
-## Testing Strategy
-<Framework, where tests live, coverage expectations, which test levels cover which concerns>
-
-## Boundaries
-- Always: <e.g. run tests before commits>
-- Ask first: <e.g. schema changes, new dependencies, CI config>
-- Never: <e.g. commit secrets, edit vendored code>
-
-## Success Criteria
-<Specific, testable conditions for done>
-
-## Open Questions
-<Anything unresolved that needs human input>
-```
-
-## After approval
-
-The approved spec goes to `architect` for the shape of the code, then to `breakdown` for the task list. Keep the spec current: when a decision or the scope changes, update the spec first and then the code. Commit the spec with the code, and link each PR to the spec section it implements.
+The human has approved a spec whose every success criterion is testable and whose Out of Scope is filled.

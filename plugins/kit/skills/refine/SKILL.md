@@ -1,52 +1,37 @@
 ---
 name: refine
-description: Generates variations of one idea, stress-tests them, and converges on a one-pager. Use when the user has an idea and wants options or a sharper version of it, or says "ideate", "refine this idea" or "stress-test this idea".
+description: Generates variations on how to solve a known problem, stress-tests them and converges on one direction. Use when the problem is clear but the approach is open, when the user wants options, or says "ideate", "refine this idea" or "stress-test this idea".
 ---
 
-# Idea Refine
+# Refine
 
-Act as a sharp, honest thinking partner: take the raw idea (`$ARGUMENTS`), open it up, converge on the strongest direction, and produce a one-pager. Push toward the simplest version that solves the real problem. Start from the user and work back to the technology. When an idea is weak, say so, specifically and kindly. Treat this as a conversation, not a template. If the user isn't sure what they want at all, use `align`; if a direction is already chosen and needs requirements, use `spec`.
+Open up the ways to solve a problem the user already understands, then converge on the simplest direction that solves it. Be a sharp, honest partner: when an idea is weak, say so specifically. When who it's for or what success looks like is still unknown, run `align` first; when the direction is already chosen, go to `spec`.
 
-## Phase 1: Understand and expand
+## Steps
 
-1. **Restate** the idea as a "How might we…" problem statement.
-2. **Ask 3–5 sharpening questions** with `AskUserQuestion`: who it's for, what success looks like, the real constraints, what has been tried, and why now. Don't move on until you know who it's for and what success looks like.
-3. **Generate 5–8 variations**, each with a reason for existing. Use whichever lenses fit: inversion, removing a constraint, a different audience, combining with an adjacent idea, a 10x simpler version, a 10x scale version, an expert's view. [frameworks.md](frameworks.md) has more; pick from them rather than running them all. Inside a codebase, ground the variations in its architecture and prior art, and cite files.
+1. **Frame** the problem as one "How might we…" sentence, from `align`'s intent statement or the idea in `$ARGUMENTS`.
+2. **Expand** into 5–8 variations, each with the bet it makes. Pick the lenses that fit (inversion, a removed constraint, another audience, 10x simpler, 10x scale); [frameworks.md](frameworks.md) has more. In a codebase, ground the variations in its architecture and prior art, and cite files. Ask with `AskUserQuestion` (multi-select) which ones resonate.
+3. **Cluster** the ones that resonated into 2–3 genuinely different directions.
+4. **Stress-test** each direction for user value, feasibility and differentiation, and name the assumptions that would kill it. The rubric is in [refinement-criteria.md](refinement-criteria.md).
+5. **Choose** with `AskUserQuestion`: one option per direction, your recommendation first, its core bet and biggest risk in the description.
+6. **Record** the chosen direction in the Direction format, then ask with `AskUserQuestion` whether to go on to `spec`, save it to `docs/ideas/<name>.md`, or stop.
 
-Wait for the user's reaction before converging.
-
-## Phase 2: Evaluate and converge
-
-1. **Cluster** the ideas that resonated into 2–3 genuinely different directions.
-2. **Stress-test** each one for user value (a painkiller or a vitamin?), feasibility (cost, and the hardest part) and differentiation (would anyone switch to it?). The full rubric is in [refinement-criteria.md](refinement-criteria.md).
-3. **Surface the assumptions** behind each one: what you're betting is true, what would kill it, and what you're choosing to ignore for now.
-
-## Phase 3: Sharpen and ship
-
-Write the one-pager:
+## Direction
 
 ```markdown
-# <Idea name>
+# <Direction name>
 
-## Problem Statement
-<One-sentence "How might we" framing>
-
-## Recommended Direction
-<The chosen direction and why, in at most 2–3 paragraphs>
-
-## Key Assumptions to Validate
-- [ ] <assumption> — <how to test it>
-
-## MVP Scope
-<The smallest version that tests the core assumption: what's in and what's out>
-
-## Not Doing (and Why)
+**Problem:** <How might we…>
+**Direction:** <what and why, in one paragraph>
+**MVP:** <the smallest version that tests the riskiest assumption>
+**Assumptions to validate:**
+- <assumption> — <how to test it>
+**Not doing:**
 - <thing> — <reason>
-
-## Open Questions
-- <question to answer before building>
 ```
 
-The Not Doing list is the most valuable part, because it makes the trade-offs explicit. Ask whether to save the one-pager to `docs/ideas/<idea-name>.md`, and save it only if they say yes.
+The Not doing list is the most valuable part, because it makes the trade-offs explicit. `spec` takes this record as its input.
 
-Done when the user has confirmed the direction, and the one-pager names the user, the success criteria, each assumption with a way to test it, the MVP scope and a Not Doing list. Example sessions are in [examples.md](examples.md).
+## Done when
+
+The user has chosen a direction, and its record names the MVP, each killing assumption with a way to test it, and a Not doing list.

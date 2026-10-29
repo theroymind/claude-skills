@@ -3,26 +3,30 @@ name: breakdown
 description: Breaks a spec into ordered, verifiable tasks in a plan and task list. Use when you have a spec or clear requirements to turn into tasks, when a task is too large to start, or when work could run in parallel.
 ---
 
-# Task Breakdown
+# Breakdown
 
-Turn the spec, and the `## Code Shape` from `architect` if one is recorded, into small tasks. Each task should be small enough to implement, test and verify in one focused session. This step writes plans, not code.
+Turn the approved spec and `architect`'s `## Code Shape` into small tasks, each one implementable, testable and verifiable in one focused session. This step writes plans, not code.
 
 ## Steps
 
-1. **Check for an existing plan.** If `tasks/plan.md` or the task list still has unchecked tasks, update them in place when this is the same work. When it is different work, stop and ask, because those tasks may be mid-build in another session. Never overwrite, delete or bulk-close another plan's open tasks.
-2. **Read** the spec, the relevant code and its patterns. Note risks and unknowns.
-3. **Map the dependencies** between components and order the foundations first (schema → types → API → client → UI).
-4. **Slice vertically.** Each task delivers one working path through the stack ("user can create a task": schema, API and UI together), not one layer ("all the endpoints"). When frontend and backend will be built in parallel, a contract task comes first.
-5. **Write the tasks** in the format below, sized S or M. Split any task that touches more than about 5 files, needs more than three acceptance criteria, spans independent subsystems, or has "and" in its title.
-6. **Order and checkpoint.** Dependencies come first and risky tasks early, and every task leaves the system working. Add a checkpoint (tests pass, build clean, core flow works, human review) after every 2–3 tasks.
-7. **Present** the plan for approval. Once it is approved, suggest `/coordinate` to delegate the tasks, or work through them yourself with `build`.
+1. **Check for an existing plan.** If `tasks/plan.md` or the task list still has unchecked tasks, update them in place when this is the same work. When it is different work, ask before touching them, because those tasks may be mid-build in another session. Never overwrite, delete or bulk-close another plan's open tasks.
+2. **Read** the spec, the Code Shape and the code they touch. Note risks and unknowns.
+3. **Slice** the work vertically, as described in Slicing: the first task delivers the thinnest path a user or caller can exercise end to end, and each later task widens that path (an edge case, hardening, a UI entry point). Title every task by what someone can do once it lands ("Admin downloads the filtered report as CSV"). A layer-only task (all the queries, a helper with no caller) is a slice that isn't finished yet.
+4. **Write the tasks** in the Task format, sized S or M. Split any task that touches more than about 5 files, needs more than three acceptance criteria, spans independent subsystems, or has "and" in its title.
+5. **Order and checkpoint.** Dependencies come first and risky tasks early, and every task leaves the system working. Add a checkpoint (tests pass, build clean, core flow works, human review) after every 2–3 tasks.
+6. **Approve** with `AskUserQuestion`: approve and run `coordinate`, or request changes.
 
-Done when every task has acceptance criteria, a verification step and its dependencies, and the human has approved the plan.
+## Slicing
+
+- **Vertical**, the default: each slice is one complete path through the stack. "User can create a task" is schema, API and UI together, not "all the endpoints".
+- **Contract-first**, when two sides are built in parallel: define the types or API contract first, build each side against it (the frontend against mock data that matches it), then integrate.
+- **Risk-first**: prove the uncertain piece (the WebSocket connection, say) before building on it.
+- **Parallel or sequential**: independent slices, tests for finished features and documentation can run in parallel. Migrations, changes to shared state and dependency chains run in sequence.
 
 ## Task format
 
 ```markdown
-## Task N: <short title>
+## Task N: <what a user or caller can do once it lands>
 
 **Description:** One paragraph on what this task accomplishes.
 
@@ -41,7 +45,7 @@ Done when every task has acceptance criteria, a verification step and its depend
 
 ## Output files
 
-- **Plan**: always `tasks/plan.md`, using the template below. Create `tasks/` if it doesn't exist.
+- **Plan**: always `tasks/plan.md`, from the template below. Create `tasks/` if it doesn't exist, and keep any `## Code Shape` that `architect` already wrote there.
 - **Task list**: a checklist in `tasks/todo.md`, unless the project's `CLAUDE.md` or `AGENTS.md`, or the user, names an issue tracker (GitHub Issues, Linear, Jira, `bd`). With a tracker:
   - Create one tracker item per task, with the acceptance criteria and verification in its body.
   - Link dependencies with the tracker's blocking mechanism, and record checkpoints as items too.
@@ -52,10 +56,10 @@ Done when every task has acceptance criteria, a verification step and its depend
 # Implementation Plan: <name>
 
 ## Overview
-<one paragraph>
+<one paragraph, linking the spec>
 
-## Architecture Decisions
-- <decision and rationale>
+## Code Shape
+<written by `architect`; when it was skipped, the one-line reason>
 
 ## Task List
 ### Phase 1: <name>
@@ -71,6 +75,6 @@ Done when every task has acceptance criteria, a verification step and its depend
 - <question that needs human input>
 ```
 
-## Parallel work
+## Done when
 
-Independent slices, tests for finished features, and documentation can run in parallel. Migrations, changes to shared state, and dependency chains run in sequence. Features that share a contract get the contract defined first, then run in parallel.
+Every task has acceptance criteria, a verification step and its dependencies, and the human has approved the plan.

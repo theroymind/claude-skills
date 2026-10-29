@@ -1,0 +1,38 @@
+schema_version: "1.1"
+name: breakdown-from-spec
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+  prompt: |
+    SPEC.md is approved and the code shape is recorded in tasks/plan.md. Turn it into a task list. Nobody is around to approve the plan, so stop once it's written.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:breakdown"
+  - name: no-code
+    type: llm
+    focus: trace
+    criteria: |
+      Pass only if the agent did not create or modify any file under `src/`. Writing or editing files under `tasks/` is fine.
+  - name: code-shape-kept
+    type: regex
+    target: {source: file, path: tasks/plan.md}
+    pattern: "## Code Shape[\\s\\S]*reports/routes"
+  - name: task-format
+    type: llm
+    focus: {source: file, path: tasks/todo.md}
+    criteria: |
+      Pass only if every task has acceptance criteria, a verification step, its dependencies and a size of S or M; there is a checkpoint after every two or three tasks.
+  - name: vertical
+    type: llm
+    weight: 2
+    focus: {source: file, path: tasks/plan.md}
+    criteria: |
+      Pass only if the tasks are vertical slices: from the first task (at most one small contract or setup task excepted), each one ends with something an admin or API caller can exercise, such as "admin can download the filtered rows as CSV". Fail if several tasks build backend pieces (helpers, escaping, columns) before any task delivers a working export path.
+  - name: todo
+    type: file_exists
+    path: tasks/todo.md

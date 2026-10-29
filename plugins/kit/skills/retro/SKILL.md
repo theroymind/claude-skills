@@ -1,18 +1,21 @@
 ---
 name: retro
-description: "Conduct a retrospective on a coding session."
+description: Conduct a retrospective on a coding session
 disable-model-invocation: true
 ---
 
-The user has asked for a **retrospective**. You are suggesting improvements to the coding agent's **environment** to improve future runs.
+# Retro
+
+Suggest improvements to the coding agent's **environment** that would make future runs go better.
 
 ## Steps
 
-1. Call the Skill tool with `agent-docs` for the writing style guide.
+1. **Load the style guide** by calling the Skill tool with `agent-docs`.
+2. **Read** the primary sources for the session the user specifies. If the user doesn't specify a session, default to the current one. For past sessions, start with `sh ${CLAUDE_SKILL_DIR}/sessions.sh [count] [project directory]`. It prints each recent session's user messages, agent dispatches and tool-call counts. Open a full `.jsonl` log only for the parts the summary leaves unclear.
+3. **Find candidates** for improvement in each of the Categories.
+4. **Present** the candidates in order of severity, then ask with `AskUserQuestion` (multi-select) which to apply.
 
-2. Read the primary sources for the session the user specifies. If the user doesn't specify a session, default to the current one. For past sessions, start with `sh ${CLAUDE_SKILL_DIR}/sessions.sh [count] [project directory]`. It prints each recent session's user messages, agent dispatches and tool-call counts. Open a full `.jsonl` log only for the parts the summary leaves unclear.
-
-3. Look for candidates for improvement in these categories.
+## Categories
 
 - **Navigation**: how easy was it for the agent to find the right files? Are there hidden dependencies between files? Would a **navigation pointer** make it easier? _Use when_ the session took a long time to find a piece of information.
 - **Automated checks**: are there automated checks that could catch errors the agent made? Linting, typing, tests, filesystem linters? Read the repo's own check command first (its `package.json`/build-tool `lint`/`check` scripts, its CI workflow), so a check that already exists but sits unwired or silently broken is the finding, not a reinvention. A repo with no **guardrail** (no pre-commit hook and no CI job running its lint/typecheck/test command) is itself a finding: an un-linted repo is a standing missed opportunity, not a neutral default. _Use when_ the agent made a mistake an automated check could have caught, or the repo has no guardrail at all.
@@ -22,11 +25,7 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 - **No-ops**: look for instructions in steering files that don't modify the agent's behavior. _Use when_ the steering files are large and unwieldy.
 - **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, readonly access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-4. Present these candidates to the user, in order of severity.
-
-## Reference
-
-### Implementation vs Review
+## Implementation vs review
 
 Remember that all work goes through two stages: implementation and review. The implementation agent has the most **context pressure**. They are responsible for exploration, writing code, and debugging failures.
 
@@ -34,7 +33,7 @@ The review agent has the least context pressure - it receives a diff, so no expl
 
 This means that the review agent should be responsible for imposing coding standards, not the implementation agent.
 
-### Files
+## Files
 
 You have access to several files in the repo:
 

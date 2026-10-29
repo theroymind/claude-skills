@@ -4,20 +4,21 @@ description: Profile and optimize performance
 disable-model-invocation: true
 ---
 
-# Performance Optimization
+# Perf
 
 Measure, find the actual bottleneck, fix that one thing, measure again, then guard the result. Optimize only what a measurement shows matters.
 
-## 1. Measure
+## Steps
 
-Take a baseline with a fixed command, fixed conditions and a fixed budget (wall-clock time, sample count or request count). Before proposing an experiment, read the attempt log from step 4 so you don't re-run an idea that already failed.
+1. **Measure.** Take a baseline with a fixed command, fixed conditions and a fixed budget (wall-clock time, sample count or request count). Before proposing an experiment, read the attempt log (see Keep or revert) so you don't re-run an idea that already failed.
+   - **Frontend**: synthetic measurements (Lighthouse, a DevTools performance trace) to reproduce problems and gate CI, and field data (`web-vitals` `onLCP`/`onINP`/`onCLS`, CrUX) to confirm that real users felt the change. The "good" thresholds are LCP ≤ 2.5s, INP ≤ 200ms and CLS ≤ 0.1.
+   - **Backend**: request timing, APM, query logs with timings, and CPU and heap profiles.
+2. **Identify** the bottleneck, letting the symptom decide what to measure first (see Symptoms).
+3. **Fix** only that bottleneck (see Usual suspects).
+4. **Verify.** A fix is a hypothesis until you measure again: re-measure exactly like the baseline, then keep or revert it and log the attempt (see Keep or revert).
+5. **Guard** the metric that justified the fix (see Guards).
 
-- **Frontend**: synthetic measurements (Lighthouse, a DevTools performance trace) to reproduce problems and gate CI, and field data (`web-vitals` `onLCP`/`onINP`/`onCLS`, CrUX) to confirm that real users felt the change. The "good" thresholds are LCP ≤ 2.5s, INP ≤ 200ms and CLS ≤ 0.1.
-- **Backend**: request timing, APM, query logs with timings, and CPU and heap profiles.
-
-## 2. Identify
-
-Let the symptom decide what to measure first:
+## Symptoms
 
 | Symptom | Look at |
 |---|---|
@@ -30,9 +31,9 @@ Let the symptom decide what to measure first:
 | Intermittent slowness | Lock contention, GC pauses, external dependencies. |
 | Memory growth, CPU spikes | Heap snapshots (leaked references, unbounded caches). CPU profile (heavy synchronous work, regex backtracking). |
 
-## 3. Fix
+## Usual suspects
 
-Fix only the bottleneck that step 2 found. These are the usual suspects. Each links to a worked fix in [references/optimization-patterns.md](references/optimization-patterns.md); open only the one you need.
+Each links to a worked fix in [references/optimization-patterns.md](references/optimization-patterns.md); open only the one you need.
 
 **Backend**
 
@@ -48,9 +49,9 @@ Fix only the bottleneck that step 2 found. These are the usual suspects. Each li
 - **Unnecessary re-renders.** An object or function created during render is a new reference every time, so every child that receives it re-renders. Hoist constants. Use `React.memo` and `useMemo` only for work the profile shows is expensive, since overusing them has its own cost. [Pattern](references/optimization-patterns.md#unnecessary-re-renders-react).
 - **Large bundle size.** Modern bundlers already tree-shake ESM named imports. The real gains come from route-level code splitting and lazy-loading heavy, rarely used features behind `Suspense`. Profile before changing import styles. [Pattern](references/optimization-patterns.md#large-bundle-size).
 
-## 4. Verify: keep or revert
+## Keep or revert
 
-A fix is a hypothesis until you measure again. Measure exactly the way you took the baseline: same command, same conditions, same budget. A cold-cache baseline against a warm-cache result measures the cache, not your change. Change one thing per measurement, because three changes together give one number you can't attribute. Repeat the runs and compare the difference with the run-to-run variance; a 3% gain inside ±5% noise is not a gain.
+Measure exactly the way you took the baseline: same command, same conditions, same budget. A cold-cache baseline against a warm-cache result measures the cache, not your change. Change one thing per measurement, because three changes together give one number you can't attribute. Repeat the runs and compare the difference with the run-to-run variance; a 3% gain inside ±5% noise is not a gain.
 
 | Result compared with the baseline | Action |
 |---|---|
@@ -68,13 +69,13 @@ Log every attempt, kept or reverted, in the PR description or a `PERF.md`, so a 
 | Memoize the row component | INP 240ms → 235ms | reverted | Inside the ±15ms noise; rows weren't the bottleneck. |
 | Virtualize the list | INP 240ms → 90ms | kept | Long tasks gone from the trace. |
 
-## 5. Guard
+## Guards
 
 Guard the metric that justified the fix (LCP, INP, p95 latency), not every number available. For user-facing surfaces, use two layers:
 
 - **A synthetic budget in CI** (`npx lhci autorun`, `bundlesize`) that compares a median or trend, so normal noise doesn't make the gate flaky.
 - **A field alert** on meaningful p75 movement. Use attributed `web-vitals` data to find the cause, and treat CrUX's rolling window as confirmation rather than an immediate alert.
 
-When either guard fires, go back to step 1 and take a fresh baseline before proposing another fix.
+When either guard fires, take a fresh baseline before proposing another fix.
 
 If the project has no budgets yet, start from: initial JavaScript under 200KB gzipped, CSS under 50KB, each above-the-fold image under 200KB, fonts under 100KB in total, API p95 under 200ms.

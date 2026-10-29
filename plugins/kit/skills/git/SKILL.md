@@ -3,7 +3,7 @@ name: git
 description: Commit, branch and release discipline. Use when committing, splitting a messy working tree into atomic commits, branching, opening a PR, or cutting a release (version bump, tag, changelog).
 ---
 
-# Git Workflow and Versioning
+# Git
 
 ## Commits
 

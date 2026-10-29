@@ -3,23 +3,21 @@ name: tdd
 description: Test-first development with the red-green-refactor loop. Use when implementing logic, fixing a bug or changing behaviour, including code pasted inline where the request never mentions tests.
 ---
 
-# Test-Driven Development
+# TDD
 
 Write a failing test before the code that makes it pass. A bug fix starts with a test that reproduces the bug.
 
-## Discover the stack first
+## Steps
 
-Before the first test, find how this repository tests and use its commands for every step. Look at the build file (`package.json`, `build.gradle`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`) and prefer checked-in wrappers (`./gradlew`, `make test`, repo scripts) over global tools. Find how it runs one focused test and how it runs the full suite. Check where tests live and how the neighbouring tests are written, and which commands CI gates on. Never assume `npm test`.
+1. **Discover the stack.** Find how this repository tests, and use its commands for every step. Look at the build file (`package.json`, `build.gradle`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`) and prefer checked-in wrappers (`./gradlew`, `make test`, repo scripts) over global tools. Find how it runs one focused test and the full suite, where tests live, how the neighbouring tests are written, and which commands CI gates on. Never assume `npm test`.
+2. **Red.** Write one test for the next behaviour and run it. It must fail, and for the expected reason. A test that passes on its first run proves nothing: check that it exercises what you think it does.
+3. **Green.** Write the least code that makes it pass.
+4. **Refactor.** Clean up while the tests stay green, and run them after each change.
+5. **Repeat** from step 2 with the focused test, then run the full suite before reporting done. Re-run a command only after the code has changed since its last clean run.
 
-## The loop
+## Bug fixes
 
-1. **Red.** Write one test for the next behaviour and run it. It must fail, and for the expected reason. A test that passes on its first run proves nothing: check that it exercises what you think it does.
-2. **Green.** Write the least code that makes it pass.
-3. **Refactor.** Clean up while the tests stay green, and run them after each step.
-
-Run the focused test during the loop and the full suite before reporting done. Re-run a command only after the code has changed since its last clean run.
-
-**Bug fixes (prove-it).** Write a test that reproduces the report and watch it fail. Then fix the code and run the full suite. For a complex bug, a subagent can write the reproduction test from the bug description alone, so the fix doesn't shape the test.
+Prove it: write a test that reproduces the report and watch it fail, then fix the code and run the full suite. For a complex bug, a subagent can write the reproduction test from the bug description alone, so the fix doesn't shape the test.
 
 ## Writing tests
 
@@ -35,12 +33,7 @@ Never skip, disable or weaken a test to make the suite pass.
 
 ## Browser changes
 
-Unit tests don't cover code that runs in a browser, so verify it at runtime with the browser tools you have:
-
-1. Reproduce the problem and take a screenshot.
-2. Inspect the console, network, DOM and computed styles.
-3. Fix it in the source.
-4. Reload, confirm the console is clean, and run the tests.
+Unit tests don't cover code that runs in a browser, so verify it at runtime with the browser tools you have: reproduce the problem and take a screenshot, inspect the console, network, DOM and computed styles, fix it in the source, then reload, confirm the console is clean, and run the tests.
 
 ## Done when
 

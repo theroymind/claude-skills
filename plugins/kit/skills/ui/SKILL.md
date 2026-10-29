@@ -3,7 +3,7 @@ name: ui
 description: Builds UI by composition from small agnostic primitives, theme tokens and variants, in any framework or engine. Use when creating, changing or reviewing UI code — components, panels, HUD, screens, overlays, layout, styling or theme.
 ---
 
-# Frontend UI Engineering
+# UI
 
 UI here is **composed**: small primitives that know nothing about the domain, assembled at the call site into the thing the screen needs. The look comes from shared **defaults**: theme tokens and variants, so an element file specifies structure and content, never its own spacing, colour or type.
 

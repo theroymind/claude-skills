@@ -1,29 +1,18 @@
 ---
 name: build
-description: Implements a change in thin, verified slices. Use when implementing a multi-file feature or change, picking up the next task from a plan, or about to write a lot of code in one pass.
+description: Implements a change in thin, verified slices. Use for a quick fix made directly, or when implementing a slice delegated by `coordinate`.
 ---
 
-# Incremental Implementation
+# Build
 
-Build one thin slice at a time, and leave the system working after each one.
+Build one thin slice at a time, and leave the system working after each one. Planned work and anything beyond a quick fix goes through `coordinate`, whose implementation agents follow this skill. Choose slices as described in `breakdown`'s Slicing: vertical by default.
 
-## The cycle
+## Steps
 
-For each slice:
-
-1. Implement the smallest complete piece.
-2. Run the tests, writing one first if nothing covers the piece (see `tdd`).
-3. Check that the slice works.
-4. Commit it (see `git`).
-5. Move on to the next slice.
-
-Run the tests before you have written about 100 lines. Verify with the repository's own commands: tests, build, type check where the stack has one, and lint. Re-run a command only after the code has changed since its last clean run.
-
-## Slicing
-
-- **Vertical**, the default: each slice is one complete path through the stack. Create a task (schema, API and UI), then list tasks, then edit one.
-- **Contract-first**, when the two sides are built in parallel: define the types or API contract, build each side against it (the frontend against mock data that matches it), then integrate.
-- **Risk-first**: prove the uncertain piece first (the WebSocket connection, say) before building on it.
+1. **Implement** the smallest complete piece.
+2. **Test** it, writing a test first if nothing covers the piece (see `tdd`). Run the tests before you have written about 100 lines.
+3. **Verify** with the repository's own commands: tests, build, type check where the stack has one, and lint. Re-run a command only after the code has changed since its last clean run.
+4. **Commit** the slice (see `git`), then move on to the next one. Under `coordinate`, leave it uncommitted: the coordinator commits.
 
 ## Rules
 
@@ -34,4 +23,6 @@ Run the tests before you have written about 100 lines. Verify with the repositor
 - **Flag incomplete features**, so increments can merge without users seeing them. New options default to the safe, conservative behaviour.
 - **Keep it revertable.** Prefer additive changes, give each migration a rollback, and delete and replace in separate commits.
 
-Done when every slice was tested and committed, the full suite and build pass, the feature works end to end, and nothing is left uncommitted.
+## Done when
+
+Every slice was tested and committed, the full suite and build pass, the feature works end to end, and nothing is left uncommitted (except under `coordinate`, which commits).

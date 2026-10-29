@@ -2,6 +2,17 @@
 
 The skill-specific branch of [`agent-docs`](SKILL.md): what changes when the document is a skill (frontmatter, the invocation choice, and router skills). Everything else about writing it is the universal reference in `SKILL.md`.
 
+## Layout
+
+Every skill uses one skeleton, so any skill reads the same way:
+
+- **Title**: `# <Name>`, the skill's name in title case (`# Spec`, `# TDD`).
+- **Intro**: one to three sentences on what the skill produces and when to skip it.
+- **`## Steps`**: one numbered list, each item `1. **Verb.** text`, with no blank lines between items. Sub-cases are bullets under their step. A step whose detail runs past a short paragraph keeps only the action and names the reference section that holds the rest.
+- **Reference sections**: `##` headings named for their subject, holding bullets (`- **Term.** text`), a table or a template. Headings carry no numbers and no `Phase` labels.
+- **`## Done when`**: the last section, whenever the skill has a completion criterion.
+- **Questions**: every question to the user goes through `AskUserQuestion`, with the recommended option first. Write no lettered option lists in the text.
+
 ## Invocation
 
 Two choices, trading the two loads:
