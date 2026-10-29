@@ -20,6 +20,7 @@ Run <test and check> before reporting any task done.
 
 - Style: <indentation, casing for functions, types, constants and enum values>.
 - No comments, docstrings or annotations. Write self-explanatory code instead. The only exceptions: a genuinely non-obvious *why* (a workaround, subtle invariant or gotcha) that the code can't convey, an annotation that tooling or the compiler needs, or module documentation the project requires.
+- Write for readability. Prefer plain, explicit code over clever or compact idioms. Name intermediate values, pull out small named helpers, and keep control flow visible. Avoid tricks that hide it, even where the language allows them.
 - No magic strings or numbers in logic. Any value with meaning goes through a named constant. Obvious literals like `0`, `1` and `-1`, and format or display strings, are fine inline.
 - Use full words in new names, no abbreviations. Boolean functions read as a question: `is`, `has`, `can`. Name category or variant fields `type`, never `kind`.
 - Match the surrounding code's naming, formatting and structure.
