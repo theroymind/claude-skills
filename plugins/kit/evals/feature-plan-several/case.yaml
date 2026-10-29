@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: feature-plan-several
+description: A request to plan several features in a project that already has a spec enters the feature pipeline instead of writing a plan by hand.
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+  prompt: |
+    help me plan out features to work through the night on: players place floors and walls to build their own rooms, a room's quality tier comes from the grade of the items in it, and crew get quarters and a cafeteria. Nobody is around to answer questions, so make your best guesses and stop after the first planning step.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:feature"
+  - name: pipeline
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Pass only if the agent invoked a planning skill through the Skill tool (feature, align, refine, spec or breakdown) before writing any plan, phase, task or spec file, and treated these as new features beyond the existing SPEC.md rather than appending tasks to it. Fail if it wrote a plan or task list by hand without invoking a skill.
+  - name: no-code
+    type: llm
+    focus: trace
+    criteria: |
+      Pass only if the agent did not create or modify any file under `src/`.

@@ -1,8 +1,7 @@
 ---
 name: feature
-description: Start or resume a feature: finds where the work stands and enters the right skill
+description: Plans, starts or resumes feature work by finding where it stands and entering the right pipeline skill. Use when the user asks to plan, scope or build one or more features, even when the project already has a spec.
 argument-hint: [feature or ask]
-disable-model-invocation: true
 ---
 
 # Feature
