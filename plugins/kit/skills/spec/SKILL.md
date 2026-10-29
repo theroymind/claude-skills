@@ -14,7 +14,7 @@ The spec is the agreed record of what we're building, for whom, and how we'll kn
 3. **Surface assumptions** about whatever the inputs leave open (platform, data, auth, existing patterns), and ask about the uncertain ones with `AskUserQuestion`, your assumption as the recommended option. Fill no ambiguity in silently.
 4. **Make criteria testable.** "Make the dashboard faster" becomes "LCP under 2.5s on 4G, initial data load under 500ms". Confirm any target you chose.
 5. **Write** the spec from the Template and save it as `SPEC.md`, or `SPEC-<capability-id>.md` beside a capability map.
-6. **Approve.** Summarize the spec and its open questions, then ask with `AskUserQuestion`: approve and continue to `architect`, or request changes. Start no `architect` work and no code until it is approved.
+6. **Approve.** Show the spec in the chat, every section and its open questions, then ask with `AskUserQuestion`: approve and continue to `architect`, or request changes. Start no `architect` work and no code until it is approved.
 
 ## Template
 

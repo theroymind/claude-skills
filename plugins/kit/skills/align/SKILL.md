@@ -14,10 +14,10 @@ Close the gap between what the user asks for and what they want before any spec,
    **Hypothesis:** You want a way to answer "how are we doing?" in standup.
    **Confidence:** ~30%, missing: who it's for, what "metrics" means, what success looks like
    ```
-2. **Ask one question at a time** with `AskUserQuestion`: your guess first as the recommended option, its reasoning in the description, the plausible alternatives after it. Later questions depend on earlier answers, so wait for each reply and update the hypothesis. Sometimes guess in a direction you expect to be rejected, so that agreeing is never the easy answer.
+2. **Ask one question at a time** with `AskUserQuestion`, opening the question text with your current confidence ("~40% · Who opens this dashboard first?"): your guess first as the recommended option, its reasoning in the description, the plausible alternatives after it. Later questions depend on earlier answers, so wait for each reply and update the hypothesis. Sometimes guess in a direction you expect to be rejected, so that agreeing is never the easy answer.
 3. **Probe "should want".** When an answer sounds like best-practice talk ("scalable", "the standard approach", "I should probably…"), ask what they would want if they didn't have to justify it to anyone.
 4. **Stop asking** when you can predict their answers to your next three questions. If several rounds pass without your confidence rising, say so and offer to step back.
-5. **Restate** the intent in lines they can confirm one by one. Always fill Out of scope: most misalignment is silent disagreement about what isn't being built.
+5. **Restate** the intent in the chat, in lines they can confirm one by one. Always fill Out of scope: most misalignment is silent disagreement about what isn't being built.
    ```markdown
    | | |
    |---|---|
