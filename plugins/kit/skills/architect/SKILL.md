@@ -9,7 +9,7 @@ Agreeing on *what* to build leaves the code's **shape** open: the modules, the t
 
 ## Steps
 
-1. **Read the vision.** Collect what comes after this work from the spec, intent docs, roadmap, later plan phases, and the conversation. Write it as a list of named future features (e.g. "co-op", "second map", "tier 3 guests"). Read the existing code's types too, so the shape extends them, and use the spec's capability ids as module names where a capability map exists. If the vision is thin, ask the user where this is heading, with `AskUserQuestion`, before sketching. Done when every future feature that could touch this work is named.
+1. **Read the vision.** Collect what comes after this work from the spec, intent docs, roadmap, later plan phases, and the conversation. Write it as a list of named future features (e.g. "co-op", "second map", "tier 3 guests"). Read the existing code's types too, so the shape extends them, and use the spec's capability ids as module names where a capability map exists. If the vision is thin, ask the user where this is heading, as a choice ([asking](../../references/asking.md)), before sketching. Done when every future feature that could touch this work is named.
 2. **Sketch the shape.** Write the overview in three parts:
    - **Module map**: each module, what it owns, and which modules it depends on. Dependencies point one way.
    - **Core types**: every type and main operation an implementer would create.
@@ -21,7 +21,7 @@ Agreeing on *what* to build leaves the code's **shape** open: the modules, the t
    - **Specific**: say what extracting it later would cost, so the user can pull the extraction forward if their vision needs it.
    - Flag any generic shape with a single consumer and no named future one.
    - Hold every dependency arrow in the module map to the Boundaries rules.
-4. **Present.** Show the overview in the Overview format, then ask each decision where a real choice exists with `AskUserQuestion`, up to four per call: 2–3 options, the recommendation first, each option's trade-off against the named future features in its description, and a `preview` of the shape when the options differ in code.
+4. **Present.** Review the overview in the Overview format ([asking](../../references/asking.md)), then in the next turn ask each decision where a real choice exists as a choice, up to four per call: 2–3 options, each option's trade-off against the named future features in its description, and a `preview` of the shape when the options differ in code.
 5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project says otherwise), or under `### Task N` inside it when the shape covers one task, each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
 6. **Hand off.** When no task list covers this work yet, run `breakdown` against the recorded shape. When the shape is for a task already in the task list, continue that task in `coordinate` (or return to it, when it called this skill).
 

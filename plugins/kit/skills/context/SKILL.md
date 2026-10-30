@@ -13,7 +13,7 @@ Read the files you'll change, their tests, the types involved, and one existing 
 
 ## Conflicts and gaps
 
-When the spec, the code and the instructions disagree, or the task needs a case the spec doesn't cover, look in the codebase for precedent first. If there is none, ask with `AskUserQuestion`, one option per reading. For example, when the spec calls for REST endpoints but user queries use GraphQL (`src/graphql/user.ts`): follow the spec and add a REST endpoint, or follow the code and update the spec. Requirements are the user's decision, so invent none.
+When the spec, the code and the instructions disagree, or the task needs a case the spec doesn't cover, look in the codebase for precedent first. If there is none, ask as a choice ([asking](../../references/asking.md)), one option per reading. For example, when the spec calls for REST endpoints but user queries use GraphQL (`src/graphql/user.ts`): follow the spec and add a REST endpoint, or follow the code and update the spec. Requirements are the user's decision, so invent none.
 
 ## Inline plan
 

@@ -15,8 +15,8 @@ The default way to implement: quick fixes go to `build`, everything else comes h
 3. **Dispatch** one general-purpose agent per slice, using the Brief.
 4. **Verify** each report. Run the repo's test and check commands yourself; this is the one gate run that counts. Then run the built-in `code-review` skill once on the diff, at `medium`, or `high` only when the slice touches determinism, memory ownership or a state machine. It already checks `CLAUDE.md`, so add nothing to it. Check scope yourself from `git diff --stat` against the brief's out-of-scope list. Send gate failures and real findings back to the implementing agent with SendMessage, then verify again. Anything beyond the findings (a user decision that changes the slice, a retune, new behaviour) goes to a fresh agent with its own brief that starts from `git diff`, so long-lived agents don't keep re-reading their whole context.
 5. **Commit** the task once every slice passes, with one commit per task on the current branch.
-6. **Report** to the user: what each slice did, the decisions agents made, the things they flagged, and what the user must check by hand, such as visuals or feel. Leave the task's boxes unchecked.
-7. **Approve** with `AskUserQuestion`: approve, or request changes. On approval, check the task's boxes off, commit that change, and go back to step 1. For changes, brief an agent with the fix and repeat from step 4.
+6. **Report** as a review ([asking](../../references/asking.md)): what each slice did, the decisions agents made, the things they flagged, and what the user must check by hand, such as visuals or feel. Leave the task's boxes unchecked.
+7. **Approve** from the reply. On approval, check the task's boxes off, commit that change, and go back to step 1. For changes, brief an agent with the fix and repeat from step 4.
 
 ## Brief
 

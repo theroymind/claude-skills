@@ -11,7 +11,7 @@ Every skill uses one skeleton, so any skill reads the same way:
 - **`## Steps`**: one numbered list, each item `1. **Verb.** text`, with no blank lines between items. Sub-cases are bullets under their step. A step whose detail runs past a short paragraph keeps only the action and names the reference section that holds the rest.
 - **Reference sections**: `##` headings named for their subject, holding bullets (`- **Term.** text`), a table or a template. Headings carry no numbers and no `Phase` labels.
 - **`## Done when`**: the last section, whenever the skill has a completion criterion.
-- **Questions**: every question to the user goes through `AskUserQuestion`, with the recommended option first. Write no lettered option lists in the text. Before asking the user to approve a document, show it in the chat: they may not open the file. A skill that tracks confidence opens each question's text with it.
+- **Questions**: every question to the user is a _choice_ or a _review_, and the step that asks names which, linking [`references/asking.md`](../../references/asking.md). That file is the single source for how to ask, so a change to the mechanic is one edit there; skills say only what to ask.
 
 ## Invocation
 

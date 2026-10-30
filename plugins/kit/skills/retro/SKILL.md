@@ -13,7 +13,7 @@ Suggest improvements to the coding agent's **environment** that would make futur
 1. **Load the style guide** by calling the Skill tool with `agent-docs`.
 2. **Read** the primary sources for the session the user specifies. If the user doesn't specify a session, default to the current one. For past sessions, start with `sh ${CLAUDE_SKILL_DIR}/sessions.sh [count] [project directory]`. It prints each recent session's user messages, agent dispatches and tool-call counts. Open a full `.jsonl` log only for the parts the summary leaves unclear.
 3. **Find candidates** for improvement in each of the Categories.
-4. **Present** the candidates in order of severity, then ask with `AskUserQuestion` (multi-select) which to apply.
+4. **Present** the candidates numbered, in order of severity, in a review ([asking](../../references/asking.md)) asking which to apply.
 
 ## Categories
 
