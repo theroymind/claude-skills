@@ -1,0 +1,40 @@
+schema_version: "1.1"
+name: botlands-skill-execution-internal
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Agent, Skill]
+  prompt: |
+    Review shared/systems/skill-execution/_internal.lua.
+graders:
+  - name: no-edits
+    type: tool_used
+    tool: Edit
+    min: 0
+    max: 0
+    arm: both
+  - name: no-writes
+    type: tool_used
+    tool: Write
+    min: 0
+    max: 0
+    arm: both
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:review"
+  - name: split-by-responsibility
+    type: llm
+    weight: 3
+    focus: trace
+    criteria: |
+      Ground truth: _internal.lua (339 lines) mixes four responsibilities: completion validation (validate_completion: range, target and resource checks), resource deduction (deduct_mp_and_set_cooldown, consume_shot_for_skill, shot-type helpers), damage calculation (calculate_skill_damage with both formulas, deal_damage, and ownership of the mutable M.rng table), and execution/orchestration (apply_spell_damage, apply_weapon_skill_damage, build_skill_event, log_skill). The refactor made afterwards split it into _validation, _resources, _damage-calc and _execution modules behind a facade with the same public names.
+      Pass only if the final message is a numbered list of findings and one finding, at any rank, says the module holds several distinct responsibilities, names at least three of the four groups above by their functions, and proposes splitting them into separate modules (keeping the public surface through a facade or re-exports is a plus, not required). Fail if that finding is absent, or if any file was edited. Bugs ranked above it do not fail it.
+  - name: no-fabrication
+    type: llm
+    focus: trace
+    criteria: |
+      Fail only on clear evidence of fabrication: a finding that cites a file or function the trace shows does not exist, or describes behaviour the file contents in the trace directly contradict. Line numbers off by a few lines, claims you cannot verify from the trace, and judgement calls about severity are not fabrication. When unsure, pass.

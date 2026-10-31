@@ -1,0 +1,29 @@
+schema_version: "1.1"
+name: review-bug-first
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Agent, Skill]
+  prompt: |
+    Review the uncommitted change in this repo.
+graders:
+  - name: no-edits
+    type: tool_used
+    tool: Edit
+    min: 0
+    max: 0
+    arm: both
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:review"
+  - name: bug-first
+    type: llm
+    weight: 3
+    focus: trace
+    criteria: |
+      `Board.oldestOpen(n)` returns `open.slice(0, n - 1)`, which is n-1 jobs, not n, so a batch of 1 is always empty and idle crew never claim a job: a bug the existing test does not catch (it asks for 2 and checks element 0).
+      Pass only if the final message is a numbered list of findings in which finding 1 is this off-by-one bug, labelled as a bug, with `src/board.js` and the line of the `slice` named and the fix `slice(0, n)` (or equivalent) given, and a later finding covers the growing `config` object in `tick` (`batchSize`, `preferLeaks`, `logClaims`): flags that switch behaviour and a logging side effect inside the simulation loop, with a concrete change proposed. Fail if the bug is missing, ranked below the shape finding, or if any file was edited.
