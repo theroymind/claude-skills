@@ -14,7 +14,7 @@ Turn the approved spec and `architect`'s `## Code Shape` into small tasks, each 
 3. **Slice** the work vertically, as described in Slicing: the first task delivers the thinnest path a user or caller can exercise end to end, and each later task widens that path (an edge case, hardening, a UI entry point). Title every task by what someone can do once it lands ("Admin downloads the filtered report as CSV"). A layer-only task (all the queries, a helper with no caller) is a slice that isn't finished yet.
 4. **Write the tasks** in the Task format, sized S or M. Split any task that touches more than about 5 files, needs more than three acceptance criteria, spans independent subsystems, or has "and" in its title.
 5. **Order and checkpoint.** Dependencies come first and risky tasks early, and every task leaves the system working. Add a checkpoint (tests pass, build clean, core flow works, human review) after every 2–3 tasks.
-6. **Approve.** Review the plan ([asking](../../references/asking.md)): the phases, each task with its acceptance criteria, and the checkpoints. On approval, run `coordinate`; for changes, revise and review again.
+6. **Approve.** Show the plan in the chat, the phases, each task with its acceptance criteria, and the checkpoints, and end the turn asking for approval ([asking](../../references/asking.md)). On approval, run `coordinate`; for changes, revise and review again.
 
 ## Slicing
 

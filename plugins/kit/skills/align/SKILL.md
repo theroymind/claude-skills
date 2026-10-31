@@ -14,10 +14,10 @@ Close the gap between what the user asks for and what they want before any spec,
    **Hypothesis:** You want a way to answer "how are we doing?" in standup.
    **Confidence:** ~30%, missing: who it's for, what "metrics" means, what success looks like
    ```
-2. **Ask one question at a time** as a choice ([asking](../../references/asking.md)), led by your current confidence: your guess first as the recommended option, the plausible alternatives after it. Later questions depend on earlier answers, so wait for each reply and update the hypothesis. Sometimes guess in a direction you expect to be rejected, so that agreeing is never the easy answer.
+2. **Ask one question at a time** with `AskUserQuestion` ([asking](../../references/asking.md)), led by your current confidence: your guess first as the recommended option, the plausible alternatives after it. Later questions depend on earlier answers, so wait for each reply and update the hypothesis. Sometimes guess in a direction you expect to be rejected, so that agreeing is never the easy answer.
 3. **Probe "should want".** When an answer sounds like best-practice talk ("scalable", "the standard approach", "I should probably…"), ask what they would want if they didn't have to justify it to anyone.
 4. **Stop asking** when you can predict their answers to your next three questions. If several rounds pass without your confidence rising, say so and offer to step back.
-5. **Restate** the intent as a review ([asking](../../references/asking.md)), in lines they can confirm one by one. Always fill Out of scope: most misalignment is silent disagreement about what isn't being built.
+5. **Restate** the intent in the chat, in lines they can confirm one by one, and end the turn asking them to confirm ([asking](../../references/asking.md)). Always fill Out of scope: most misalignment is silent disagreement about what isn't being built.
    ```markdown
    | | |
    |---|---|
@@ -28,8 +28,8 @@ Close the gap between what the user asks for and what they want before any spec,
    | **Constraint** | <the binding limit> |
    | **Out of scope** | <what we're not doing> |
    ```
-6. **Confirm** from their reply: fold in each correction and restate until confirmed. "Whatever you think" hands the decision back to you, so re-ask it as a choice between two concrete options.
-7. **Hand off** with a choice: `spec` to write it up, `refine` to explore approaches first, or stop here. Offer to save the statement to `docs/intent/<topic>.md`. Start nothing downstream until they choose.
+6. **Confirm** from their reply: fold in each correction and restate until confirmed. "Whatever you think" hands the decision back to you, so re-ask it with `AskUserQuestion` as two concrete options.
+7. **Hand off** with `AskUserQuestion`: `spec` to write it up, `refine` to explore approaches first, or stop here. Offer to save the statement to `docs/intent/<topic>.md`. Start nothing downstream until they choose.
 
 ## Done when
 

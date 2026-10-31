@@ -10,11 +10,11 @@ Open up the ways to solve a problem the user already understands, then converge 
 ## Steps
 
 1. **Frame** the problem as one "How might we…" sentence, from `align`'s intent statement or the idea in `$ARGUMENTS`.
-2. **Expand** into 5–8 numbered variations, each with the assumption it rests on. Pick the lenses that fit (inversion, a removed constraint, another audience, 10x simpler, 10x scale); [frameworks.md](frameworks.md) has more. In a codebase, ground the variations in its architecture and prior art, and cite files. Review them ([asking](../../references/asking.md)), asking which ones resonate.
+2. **Expand** into 5–8 numbered variations, each with the assumption it rests on. Pick the lenses that fit (inversion, a removed constraint, another audience, 10x simpler, 10x scale); [frameworks.md](frameworks.md) has more. In a codebase, ground the variations in its architecture and prior art, and cite files. Show them in the chat and end the turn asking which resonate ([asking](../../references/asking.md)). Steps 3–6 wait for the reply, even when the ask says to pick one.
 3. **Cluster** the ones that resonated into 2–3 genuinely different directions.
 4. **Stress-test** each direction for user value, feasibility and differentiation, and name the assumptions that would kill it. The rubric is in [refinement-criteria.md](refinement-criteria.md).
-5. **Choose** with a choice: one option per direction, its core assumption and biggest risk in the description.
-6. **Record** the chosen direction in the Direction format, in a review that ends by asking whether to go on to `spec`, save it to `docs/ideas/<name>.md`, or stop.
+5. **Choose** with `AskUserQuestion` ([asking](../../references/asking.md)): one option per direction, your recommendation first, its core assumption and biggest risk in the description.
+6. **Record** the chosen direction in the Direction format. Show it in the chat and end the turn asking whether to go on to `spec`, save it to `docs/ideas/<name>.md`, or stop.
 
 ## Direction
 
