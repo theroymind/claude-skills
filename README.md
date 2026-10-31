@@ -24,6 +24,7 @@ Start at the first stage that applies; skip the ones already settled. For a quic
 ## Along the way
 
 - `tdd`, `debug`, `perf`, `ui`: while implementing
+- `review`: findings on a change's bugs, shape and cost, run by `coordinate` on every slice or by hand on any diff
 - `commit`, `git`: saving and shipping work
 - `adr`: recording a decision
 - `context`: starting in unfamiliar code or handing off a session

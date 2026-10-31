@@ -1,2 +1,4 @@
 plugins/kit/evals/results/
 .DS_Store
+plugins/kit/evals/fixtures/
+plugins/kit/evals/results-summaries/*.json

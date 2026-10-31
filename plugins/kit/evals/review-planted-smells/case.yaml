@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: review-planted-smells
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Agent, Skill]
+  prompt: |
+    Review the uncommitted change in this repo.
+graders:
+  - name: no-edits
+    type: tool_used
+    tool: Edit
+    min: 0
+    max: 0
+    arm: both
+  - name: no-writes
+    type: tool_used
+    tool: Write
+    min: 0
+    max: 0
+    arm: both
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:review"
+  - name: findings
+    type: llm
+    weight: 3
+    focus: trace
+    criteria: |
+      Pass only if the final message is a numbered list of findings, each with a file and line reference and a concrete change to make, and the list includes all three of:
+      - crew.js reaching into the board's private `_jobs` array (coupling to board internals); the suggested change adds an operation on Board rather than reading `_jobs`.
+      - the `urgent` boolean parameter on `assign` switching between two unrelated behaviours.
+      - `wagesByJob` doing a `jobs.find` inside the loop over crews (a list lookup per crew, quadratic at 5,000 crew), with a map or index suggested.
+      Also required: the `wages` import in crew.js, which creates a `crew → payroll` dependency against the documented direction (or is unused), is mentioned either as a finding or as a note.
+      Fail if any finding is fabricated (names a problem not present in the code), or if the message edits files or claims to have fixed anything.
+  - name: asks-numbers
+    type: llm
+    focus: trace
+    criteria: |
+      Pass if the final message ends by asking which findings to apply by number (for example "Reply with the numbers to apply") and opens no multiple-choice dialog in that turn.
