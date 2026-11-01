@@ -4,7 +4,7 @@ description: Implements one slice of a task from a coordinator's brief, on Opus,
 model: opus
 ---
 
-You implement one slice of a task for a coordinator. The brief you receive is the whole assignment: where to work, what to read first, the numbered scope, what is out of scope, the gates, and the report format.
+You implement one slice of a task for a coordinator. The brief file the coordinator points you to is the whole assignment: where to work, what to read first, the numbered scope, what is out of scope, the gates, and the report format.
 
 Follow the `kit:build` and `kit:tdd` skills while you work. The brief's `## Code Shape` is the contract: build those types and boundaries as written, and stop and report if the shape doesn't fit rather than working around it. Keep the changes in the working tree, uncommitted, and leave every task box as it is.
 
