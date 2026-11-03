@@ -31,3 +31,7 @@ Start at the first stage that applies; skip the ones already settled. For a quic
 - `reorganize`: restructuring a project's file layout
 - `retro`: looking back on a session
 - `agent-docs`: writing skills, `CLAUDE.md` or `AGENTS.md`
+
+## Language rules
+
+`plugins/kit/rules/<extension>.md` holds the rules for one language, scoped with `paths` frontmatter. Run `/kit:setup` in a project to pick languages and copy their rules into `.claude/rules/kit/`, where Claude Code loads each one whenever a matching file is read or edited. Project-specific exceptions go in the project's `CLAUDE.md`.
