@@ -9,7 +9,9 @@ Load only what the task needs, ask instead of inventing when sources disagree, a
 
 ## Before a task
 
-Read the files you'll change, their tests, the types involved, and one existing example of the pattern you're about to write. Load only the section of the spec the task needs. When something fails, work from the specific error, not the whole log.
+Start with the recent change, then the code. When `CLAUDE.md` names a warm-up command, run it for the task. Otherwise read the recent history of the files you'll change (`git log -p -n 3 -- <files>`), and the commits that built the task's related work when the tracker links them. The diffs carry the why, the conventions and the seam you'll extend, in far fewer tokens than whole files. Skip this for a new file or a trivial edit.
+
+Then read the files you'll change, focused on the hunks those commits touched, plus their tests, the types involved, and one existing example of the pattern you're about to write. Load only the section of the spec the task needs. When something fails, work from the specific error, not the whole log.
 
 ## Conflicts and gaps
 

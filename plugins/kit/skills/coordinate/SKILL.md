@@ -23,7 +23,7 @@ The default way to implement: quick fixes go to `build`, everything else comes h
 The implementor already knows its method (`build`, `tdd`), that it leaves the tree uncommitted, and how to report, and it loads the repo's `CLAUDE.md` on its own. The brief spends its length on what neither can know:
 
 - **Where**: the repo path, and a note that this is slice N of task X.
-- **Read first**: the task entry, the plan sections it cites, the parts of `## Code Shape` this slice implements, and the existing files to build on, with the procedures and types they should reuse. The Code Shape is the contract: the agent builds those types and boundaries as written.
+- **Read first**: the commits that built the code this slice touches, or the warm-up pack's path when `CLAUDE.md` names a warm-up command, so the agent reads the diffs before the files. Then the task entry, the plan sections it cites, the parts of `## Code Shape` this slice implements, and the existing files to build on, with the procedures and types they should reuse. The Code Shape is the contract: the agent builds those types and boundaries as written.
 - **Scope**: numbered changes, each concrete enough to check off.
 - **Out of scope**: the other slices, later tasks, and files this slice must leave alone.
 - **Open decisions**: the questions the plan leaves open. The agent picks the simplest sound option and reports it. If the plan's shape doesn't fit, the agent stops and reports that rather than working around it.
