@@ -46,7 +46,7 @@ Turn the approved spec and `architect`'s `## Code Shape` into small tasks, each 
 ## Output files
 
 - **Plan**: always `tasks/plan.md`, from the template below. Create `tasks/` if it doesn't exist, and keep any `## Code Shape` that `architect` already wrote there.
-- **Task list**: a checklist in `tasks/todo.md`, unless the project's `CLAUDE.md` or `AGENTS.md`, or the user, names an issue tracker (GitHub Issues, Linear, Jira, `bd`). With a tracker:
+- **Task list**: a checklist in `tasks/todo.md`, unless the project's `CLAUDE.md` or `AGENTS.md`, or the user, names an issue tracker (GitHub Issues, Linear, Jira, `bd`, `tix`). With a tracker:
   - Create one tracker item per task, with the acceptance criteria and verification in its body.
   - Link dependencies with the tracker's blocking mechanism, and record checkpoints as items too.
   - Note the tracker in the plan, and make the plan's Task List an ordered index of item links instead of a second checklist.
