@@ -9,7 +9,7 @@ An ADR records *why*: the context, constraints and rejected alternatives that th
 
 ## Steps
 
-1. **Find the convention.** Look for existing ADRs, project instructions and ADR tooling (an `.adr-dir` file, `adr-tools`, MADR). Match the existing location, file format (Markdown or reStructuredText), numbering sequence, filename pattern and section headings. If the evidence conflicts, raise the conflict instead of adding another scheme. Only when there is no convention, use `docs/decisions/NNNN-title.md` and the Template.
+1. **Find the convention.** Look for existing ADRs, project instructions and ADR tooling (an `.adr-dir` file, `adr-tools`, MADR). Match the existing location, file format (Markdown or reStructuredText), numbering sequence, filename pattern and section headings. If the evidence conflicts, raise the conflict instead of adding another scheme. Only when there is no convention, use the decision records location ([artifacts](../../references/artifacts.md)) and the Template.
 2. **Write it.** Ground every claim in the code or the conversation, and flag anything you can't back up.
 3. **Edit the prose** as described in Prose review.
 4. **Supersede, never delete.** When a decision changes, write a new ADR that references the old one, and set the old one's status to `Superseded by ADR-NNNN`.

@@ -10,11 +10,12 @@ Copies the kit's language rules into the project, so Claude Code loads each one 
 
 ## Steps
 
-1. **List** the rules in `${CLAUDE_PLUGIN_ROOT}/rules/`, and for each one count the project's files with that extension (`git ls-files -- '*.<extension>'`).
+1. **List** the rules in `${CLAUDE_PLUGIN_ROOT}/rules/`, and for each one count the project's files with that extension (`git ls-files -- '*.<extension>'`). When no rule matches a language the project uses, say so in one line and skip to step 4.
 2. **Ask** which languages to set up, as a choice ([asking](../../references/asking.md)), with `multiSelect` on: one option per rule, the ones the project already uses first and marked recommended.
 3. **Copy** each chosen rule to `.claude/rules/kit/<extension>.md` in the project root. When a copy is already there and differs, show the diff and ask, as a choice, whether to replace it; an unchanged copy is left alone.
-4. **Report** in one line per language what was added, replaced or left alone. Point out that project-specific exceptions belong in the project's `CLAUDE.md`, which the rules defer to, and that `.claude/rules/kit/` is ready to commit.
+4. **Check artifact locations** against the defaults in [artifacts](../../references/artifacts.md). A default conflicts when the project already uses that path for something else, such as a `docs/` folder of committed team docs. It also conflicts when the project's instructions put plans or tasks somewhere else, such as an issue tracker. Propose the override lines as a review ([asking](../../references/asking.md)), and write nothing until the user approves. They go in `CLAUDE.local.md` when `CLAUDE.md` is shared with a team, and in `CLAUDE.md` otherwise.
+5. **Report** in one line per language what was added, replaced or left alone, and in one line where the artifact overrides went. Point out that project-specific exceptions belong in the project's `CLAUDE.md` or `CLAUDE.local.md`, which the rules defer to, and that `.claude/rules/kit/` is ready to commit.
 
 ## Done when
 
-Every chosen rule is in `.claude/rules/kit/`, matching the plugin's copy unless the user chose to keep their own.
+Every chosen rule is in `.claude/rules/kit/`, matching the plugin's copy unless the user chose to keep their own. Every conflicting artifact location has an override the user approved or declined.
