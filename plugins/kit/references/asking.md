@@ -20,7 +20,7 @@ A question whose answer depends on content the user must read: a document, repor
 
 1. **Show** the content in the chat as plain text, in full. The user may not open the file.
 2. **End your turn** with one line saying how to answer, and open no `AskUserQuestion` in that turn, because the dialog would cover the content. The stop holds even when the ask says to decide or to write the result somewhere; only an ask that says nobody is around to answer skips it, and then the reply states each call made in the user's place.
-   - Approval: "Reply approve, or tell me what to change."
+   - Approval: name each item being approved and where to read it, as a file path or a command such as `git show HASH`. Then: "Reply approve, or tell me what to change."
    - Selection, with the items numbered: "Reply with the numbers to apply."
    - Read before choices: "Reply when you've read it, or comment on it." The choices follow as cards in the next turn.
 3. **Act on the reply.** For changes, revise and run the review again.
