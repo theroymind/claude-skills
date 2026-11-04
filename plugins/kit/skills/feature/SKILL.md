@@ -10,7 +10,7 @@ The entry point for building a feature. Each stage hands off to the next, so thi
 
 ## Steps
 
-1. **Read the state.** The ask (`$ARGUMENTS` or the conversation), `docs/intent/`, `docs/ideas/`, `SPEC*.md`, `## Code Shape` in `tasks/plan.md`, and the open tasks. When `CLAUDE.md` names a tracker command (such as `tix ready` and `tix show`), read tasks through it rather than by opening files; otherwise read `tasks/todo.md`.
+1. **Read the state.** The ask (`$ARGUMENTS` or the conversation), `docs/intent/`, `docs/ideas/`, `SPEC*.md`, `## Code Shape` in `tasks/plan.md`, and the open tasks. When `CLAUDE.md` names a tracker command (such as `tix ready` and `tix show`), read tasks through it rather than by opening files; otherwise read `tasks/todo.md`. When `CLAUDE.md` names a warm-up command and the ask names a task, run it for that task and read the pack before anything else: its cards and diffs say where the work stands.
 2. **Pick the stage** from the first row of Stages that matches.
 3. **Enter it.** Say in one line which stage and why, then invoke that skill.
 
