@@ -1,6 +1,6 @@
 ---
 name: review
-description: Reviews a change or module for bugs, shape and cost and returns ranked findings, no edits. Four lenses — correct (bugs traced on a concrete input, including ones today's data hides), modular (one owner per concept, one-way dependencies, contracts at boundaries), composed (small parts assembled at the call site instead of one part configured by flags), and cheap (static reasoning about work at scale, no profiling). Use on a diff, a PR, a branch or a module when the user asks for a review, a second opinion on structure or approach, or whether a change fits the architecture; `coordinate` runs it on every slice.
+description: Reviews a change or module for bugs, shape and cost and returns ranked findings, no edits. Four lenses — correct (bugs traced on a concrete input, including ones today's data hides), modular (one owner per concept, one-way dependencies, contracts at boundaries), composed (small parts assembled at the call site instead of one part configured by flags), and cheap (static reasoning about work at scale, no profiling). Use on a diff, a PR, a branch or a module when the user asks for a review, a second opinion on structure or approach, or whether a change fits the architecture; `coordinate` runs it at the end of each series of tasks.
 argument-hint: [diff | PR | branch | path]
 ---
 
