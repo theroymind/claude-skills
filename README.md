@@ -27,6 +27,7 @@ Start at the first stage that applies; skip the ones already settled. For a quic
 - `review`: findings on a change's bugs, shape and cost, run by `coordinate` on every slice or by hand on any diff
 - `commit`, `git`: saving and shipping work
 - `adr`: recording a decision
+- `conclude`: recording what a conversation settled as committed vault notes
 - `context`: starting in unfamiliar code or handing off a session
 - `reorganize`: restructuring a project's file layout
 - `retro`: looking back on a session
