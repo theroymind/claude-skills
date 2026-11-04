@@ -24,7 +24,7 @@ Start at the first stage that applies; skip the ones already settled. For a quic
 ## Along the way
 
 - `tdd`, `debug`, `perf`, `ui`: while implementing
-- `review`: findings on a change's bugs, shape and cost, run by `coordinate` on every slice or by hand on any diff
+- `review`: findings on a change's bugs, shape and cost, run by `coordinate` at the end of each series of tasks or by hand on any diff
 - `commit`, `git`: saving and shipping work
 - `adr`: recording a decision
 - `conclude`: recording what a conversation settled as committed vault notes
