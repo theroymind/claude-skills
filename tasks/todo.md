@@ -7,12 +7,12 @@ See [plan.md](plan.md) and [SPEC-conclude.md](../SPEC-conclude.md). The repo has
 **Description:** Write `plugins/kit/skills/conclude/SKILL.md` following `agent-docs`. It reads the conversation since the last `conclude` run in it (or the whole conversation), proposes note changes as a list (new or existing, type, ref, title, one-line summary, and what changes for an existing note), and waits for approval. It picks note types from the project's vault rules (`docs/README.md` or the file `CLAUDE.md` names), writes through the tracker command `CLAUDE.md` names (prose by hand below the tool's properties), and commits exactly those note files by path in one commit, with `commit`'s message rules but not `commit` itself (it stages the whole tree), reporting each ref and summary. With no tracker named it writes markdown under `docs/` in the project's layout. List it in the README.
 
 **Acceptance criteria:**
-- [ ] It writes nothing before the user approves the proposed list, and the list shows type, ref, title and summary per note.
-- [ ] Notes are created and changed through the tracker's commands; every note has a standalone summary and a body stating the why; no type outside the project's rules.
-- [ ] One commit holding only the notes written or changed, then a report of each note's ref and summary.
+- [x] It writes nothing before the user approves the proposed list, and the list shows type, ref, title and summary per note.
+- [x] Notes are created and changed through the tracker's commands; every note has a standalone summary and a body stating the why; no type outside the project's rules.
+- [x] One commit holding only the notes written or changed, then a report of each note's ref and summary.
 
 **Verification:**
-- [ ] Manual check: in a scratch copy of odin-tbc, after a short design exchange, `/conclude` proposes a decision note, writes it with `tix doc add --type decision` on approval, and commits it
+- [x] Manual check: in a scratch copy of odin-tbc, after a short design exchange, `/conclude` proposes a decision note, writes it with `tix doc add --type decision` on approval, and commits it
 
 **Dependencies:** None
 **Files likely touched:** `plugins/kit/skills/conclude/SKILL.md`, `README.md`

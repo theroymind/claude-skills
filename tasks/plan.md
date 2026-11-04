@@ -13,7 +13,7 @@ Skipped: the work is skill markdown with no types or modules to shape.
 Tasks with criteria are in [todo.md](todo.md).
 
 ### Phase 1: The skill
-- [ ] Task 1: The user runs `/conclude` and the approved notes land through the tracker in one commit
+- [x] Task 1: The user runs `/conclude` and the approved notes land through the tracker in one commit
 - [ ] Task 2: Notes pass the project's gate before they're committed
 - [ ] Task 3: odin-tbc names its gate command
 ### Checkpoint: conclude works in odin-tbc
