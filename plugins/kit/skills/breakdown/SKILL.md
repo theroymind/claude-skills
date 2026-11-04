@@ -9,7 +9,7 @@ Turn the approved spec and `architect`'s `## Code Shape` into small tasks, each 
 
 ## Steps
 
-1. **Check for an existing plan.** If `tasks/plan.md` or the task list still has unchecked tasks, update them in place when this is the same work. When it is different work, ask before touching them, because those tasks may be mid-build in another session. Never overwrite, delete or bulk-close another plan's open tasks.
+1. **Check for an existing plan.** Find where the project keeps the plan and task list ([artifacts](../../references/artifacts.md)). If the plan or the task list still has unchecked tasks, update them in place when this is the same work. When it is different work, ask before touching them, because those tasks may be mid-build in another session. Never overwrite, delete or bulk-close another plan's open tasks.
 2. **Read** the spec, the Code Shape and the code they touch. Note risks and unknowns.
 3. **Slice** the work vertically, as described in Slicing: the first task delivers the thinnest path a user or caller can exercise end to end, and each later task widens that path (an edge case, hardening, a UI entry point). Title every task by what someone can do once it lands ("Admin downloads the filtered report as CSV"). A layer-only task (all the queries, a helper with no caller) is a slice that isn't finished yet.
 4. **Write the tasks** in the Task format, sized S or M. Split any task that touches more than about 5 files, needs more than three acceptance criteria, spans independent subsystems, or has "and" in its title.
@@ -45,12 +45,12 @@ Turn the approved spec and `architect`'s `## Code Shape` into small tasks, each 
 
 ## Output files
 
-- **Plan**: always `tasks/plan.md`, from the template below. Create `tasks/` if it doesn't exist, and keep any `## Code Shape` that `architect` already wrote there.
-- **Task list**: a checklist in `tasks/todo.md`, unless the project's `CLAUDE.md` or `AGENTS.md`, or the user, names an issue tracker (GitHub Issues, Linear, Jira, `bd`, `tix`). With a tracker:
+- **Plan**: `tasks/plan.md`, or the location the project names ([artifacts](../../references/artifacts.md)), from the template below. Create its folder if it doesn't exist, and keep any `## Code Shape` that `architect` already wrote there.
+- **Task list**: a checklist in `tasks/todo.md`, or the location the project names, unless the project's instructions or the user name an issue tracker (GitHub Issues, Linear, Jira, `bd`, `tix`). With a tracker:
   - Create one tracker item per task, with the acceptance criteria and verification in its body.
   - Link dependencies with the tracker's blocking mechanism, and record checkpoints as items too.
   - Note the tracker in the plan, and make the plan's Task List an ordered index of item links instead of a second checklist.
-  - Keep every task in the tracker; write no `tasks/todo.md`.
+  - Keep every task in the tracker; write no task list file.
 
 ```markdown
 # Implementation Plan: <name>

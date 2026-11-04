@@ -29,6 +29,10 @@ Run <test and check> before reporting any task done.
 - Prefer reusable, generic building blocks over one-off duplicates. Keep something local only when it's genuinely specific to one feature.
 - Surface problems instead of working around them. Flag unclear boundaries before implementing, and call out code smells and growing complexity.
 
+## Artifact locations
+
+<Where intent, ideas, specs, the plan, the task list, decision records and vault notes live, when they differ from the kit's defaults. Name the tracker for tasks if there is one. Say whether the folder is shared across worktrees and whether it is committed. Delete this section to use the defaults.>
+
 ## Git and PRs
 
 - The default branch is `<branch>`.

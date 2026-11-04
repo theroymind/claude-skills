@@ -22,7 +22,7 @@ Agreeing on *what* to build leaves the code's **shape** open: the modules, the t
    - Flag any generic shape with a single consumer and no named future one.
    - Hold every dependency arrow in the module map to the Boundaries rules.
 4. **Present.** Show the overview in the chat in the Overview format and end the turn asking them to read it ([asking](../../references/asking.md)). In the next turn, ask each decision where a real choice exists with `AskUserQuestion`, up to four per call: 2–3 options, each option's trade-off against the named future features in its description, and a `preview` of the shape when the options differ in code.
-5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project says otherwise), or under `### Task N` inside it when the shape covers one task, each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
+5. **Record.** Write the agreed overview into the plan under `## Code Shape` (`tasks/plan.md` unless the project names another location, see [artifacts](../../references/artifacts.md)), or under `### Task N` inside it when the shape covers one task, each decision as: decision · options rejected · decided by (user/agent). The overview is the contract implementation agents build against; an agent that needs a different shape stops and reports the change.
 6. **Hand off.** When no task list covers this work yet, run `breakdown` against the recorded shape. When the shape is for a task already in the task list, continue that task in `coordinate` (or return to it, when it called this skill).
 
 ## Notation
