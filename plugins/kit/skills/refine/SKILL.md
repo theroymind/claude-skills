@@ -14,7 +14,7 @@ Open up the ways to solve a problem the user already understands, then converge 
 3. **Cluster** the ones that resonated into 2–3 genuinely different directions.
 4. **Stress-test** each direction against the rubric in [refinement-criteria.md](refinement-criteria.md): user value, feasibility, differentiation, and the assumption that would kill it.
 5. **Choose** with `AskUserQuestion` ([asking](../../references/asking.md)): one option per direction, your recommendation first, and in each description the killing assumption and the rubric dimension it is weakest on, so the stress-test is visible in the card.
-6. **Record** the chosen direction in the Direction format, or in the project's own note format when the ask or the repo names one (a `templates/` folder, an existing decisions or ideas directory). Decide nothing the direction leaves open: list those under Open decisions for `spec` to ask. Show the record in the chat and end the turn asking whether to go on to `spec`, save it, or stop. To save it, create the note through the project's tool when `CLAUDE.md` names one (such as `tix doc add --type idea TITLE`), then write the prose into the note it made, keeping its properties; without a tool, write `docs/ideas/<name>.md`.
+6. **Record** the chosen direction in the Direction format, or in the project's own note format when the ask or the repo names one (a `templates/` folder, an existing decisions or ideas directory). Decide nothing the direction leaves open: list those under Open decisions for `spec` to ask. Show the record in the chat and end the turn asking whether to go on to `spec`, save it through `conclude`, or stop.
 
 ## Direction
 

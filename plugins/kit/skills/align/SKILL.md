@@ -29,7 +29,7 @@ Close the gap between what the user asks for and what they want before any spec,
    | **Out of scope** | <what we're not doing> |
    ```
 6. **Confirm** from their reply: fold in each correction and restate until confirmed. "Whatever you think" hands the decision back to you, so re-ask it with `AskUserQuestion` as two concrete options.
-7. **Hand off** with `AskUserQuestion`: `spec` to write it up, `refine` to explore approaches first, or stop here. Offer to save the statement to `docs/intent/<topic>.md`. Start nothing downstream until they choose.
+7. **Hand off** with `AskUserQuestion`: `spec` to write it up, `refine` to explore approaches first, or stop here. To save the statement, offer `conclude`, which records it in the vault. Start nothing downstream until they choose.
 
 ## Done when
 
