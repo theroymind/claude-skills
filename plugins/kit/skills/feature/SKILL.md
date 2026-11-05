@@ -10,7 +10,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 ## Steps
 
-1. **Research.** Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks near it, and the code and recent commits it would change. Read notes through the tracker `CLAUDE.md` names, such as `tix search QUERY` and then `tix context REF` on each hit, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
+1. **Research.** Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix search QUERY` and then `tix context REF` on each hit, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
 2. **Talk it through.** Ask one question at a time with `AskUserQuestion` as a choice ([asking](../../references/asking.md)), with your best guess as the recommended option. Cover:
    - who it's for and what they get
    - the approach
@@ -25,9 +25,10 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 ## Notes
 
-- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way with what it beat. `## Acceptance criteria` is a checklist of things you can see or test. Settle every question in the conversation, so the doc holds only answers.
+- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way. `## Acceptance criteria` is a checklist of things you can see or test. Settle every question in the conversation, so the doc holds only answers.
 - **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and the same two sections.
 - **Idea.** A summary and free text. It becomes a feature once it's worked out.
+- **Lifetime.** A feature and its tasks live only while they're being built: `implement` deletes them once the feature is done, so the code, and any architecture docs the project keeps, stay the only truth.
 
 ## Slicing
 

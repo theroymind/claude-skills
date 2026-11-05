@@ -16,9 +16,9 @@ Builds one task at a time from the tasks `feature` wrote, and commits each one o
    - `medium` or `large`: dispatch one `kit:implementor`. Write its Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts can get one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built.
 3. **Verify.** Run the repo's test and check commands yourself; this is the gate run that counts. Read `git diff` against the task's criteria and the brief's out of scope list. Send gate failures back to the implementor with SendMessage, then verify again.
 4. **Review** when the task has `review: true`. Dispatch one `kit:reviewer` with the repo path and the brief's path, or the task ref for a small task. Send the findings worth acting on back to the implementor, or fix them yourself on a small task, then verify again.
-5. **Commit** once. Tick each criterion the change meets (`tix tick REF N`), mark the task done (`tix done REF`), and commit the code and the ticks together with a `Ticket: REF` trailer. A change that moves the architecture contract `CLAUDE.md` names updates it in the same commit.
+5. **Commit** once. Tick each criterion the change meets (`tix tick REF N`), mark the task done (`tix done REF`), and commit the code and the ticks together with a `Ticket: REF` trailer. When `CLAUDE.md` says where the project documents its architecture, such as a `CLAUDE.md` in each package, a change that moves a module's shape updates that doc in the same commit.
 6. **Report** in the chat: what changed, the decisions made, anything flagged, the review's findings with what was fixed and what was left, and what the user must check by hand, such as visuals or feel. Name the commit as `git show HASH` and the task as `tix show REF`. End the turn asking for approval as a review ([asking](../../references/asking.md)).
-7. **Approve** from the reply. For changes, brief a fresh implementor that starts from `git show HASH`, or fix it yourself on a small task, then repeat from step 3 and commit the fix with the same trailer. On approval, go back to step 1 for the feature's next ready task. Once every task is done, tick the feature's criteria the user confirms and mark the feature done.
+7. **Approve** from the reply. For changes, brief a fresh implementor that starts from `git show HASH`, or fix it yourself on a small task, then repeat from step 3 and commit the fix with the same trailer. On approval, go back to step 1 for the feature's next ready task. Once every task is done and the user confirms the feature's criteria, finish it: fold anything that must outlast the feature into the project's architecture docs, when it has them, delete the feature's doc and its tasks, and commit that as `Finish <feature>` with a `Ticket: REF` trailer. Its decisions and alternatives were brainstorming and go with it.
 
 ## Brief
 
@@ -40,4 +40,4 @@ The implementor already knows its method (`build`, `tdd`), leaves the tree uncom
 
 ## Done when
 
-Every task picked is committed, ticked, done and approved, and a finished feature is marked done.
+Every task picked is committed, ticked, done and approved, and a finished feature is deleted with its tasks.
