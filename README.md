@@ -19,11 +19,9 @@ For a quick fix (a few lines, nothing to decide), go straight to `build`.
 
 ## Along the way
 
-- `tdd`, `debug`, `perf`, `ui`: while implementing
+- `debug`, `ui`: while implementing
 - `review`: findings on a change's bugs, shape and cost, run by `implement` on tasks marked for review or by hand on any diff
 - `commit`, `git`: saving and shipping work
-- `context`: starting in unfamiliar code or handing off a session
-- `reorganize`: restructuring a project's file layout
 - `retro`: looking back on a session
 - `agent-docs`: writing skills, `CLAUDE.md` or `AGENTS.md`
 

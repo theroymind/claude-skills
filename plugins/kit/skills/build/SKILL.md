@@ -10,7 +10,7 @@ Build one thin slice at a time, and leave the system working after each one. Pla
 ## Steps
 
 1. **Implement** the smallest complete piece.
-2. **Test** it, writing a test first if nothing covers the piece (see `tdd`). Run the tests before you have written about 100 lines.
+2. **Test** it, writing a test first if nothing covers the piece. Run the tests before you have written about 100 lines.
 3. **Simplify.** Reread the diff top to bottom as a newcomer would. Cut every line, parameter, branch and type the task doesn't need; inline a helper that only renames one line; rename anything you had to stop and think about; flatten nesting into early returns. Done when each procedure reads as a short sequence of named steps and nothing left can go without losing behaviour. Run the tests again.
 4. **Verify** with the repository's own commands: tests, build, type check where the stack has one, and lint. Re-run a command only after the code has changed since its last clean run.
 5. **Commit** the slice (see `git`), then move on to the next one. Under `implement`, leave it uncommitted: `implement` commits.
