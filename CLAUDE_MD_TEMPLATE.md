@@ -2,7 +2,7 @@
 
 # <project name>
 
-<One or two sentences: what the project is, and where its intent, spec and task list live.>
+<One or two sentences: what the project is, and where its features and tasks live.>
 
 ## Commands
 
@@ -31,7 +31,7 @@ Run <test and check> before reporting any task done.
 
 ## Artifact locations
 
-<Where intent, ideas, specs, the plan, the task list, decision records and vault notes live, when they differ from the kit's defaults. Name the tracker for tasks if there is one. Say whether the folder is shared across worktrees and whether it is committed. Delete this section to use the defaults.>
+<Where the intent, pillars, feature docs, tasks, ideas and vault notes live, when they differ from the kit's defaults. Name the tracker for tasks if there is one. Say whether the folder is shared across worktrees and whether it is committed. Delete this section to use the defaults.>
 
 ## Git and PRs
 
