@@ -1,11 +1,11 @@
 ---
 name: build
-description: Implements a change in thin, verified slices. Use for a quick fix made directly, or when implementing a slice delegated by `coordinate`.
+description: Implements a change in thin, verified slices. Use for a quick fix made directly, or when building a task for `implement`.
 ---
 
 # Build
 
-Build one thin slice at a time, and leave the system working after each one. Planned work and anything beyond a quick fix goes through `coordinate`, whose implementation agents follow this skill. Choose slices as described in `breakdown`'s Slicing: vertical by default.
+Build one thin slice at a time, and leave the system working after each one. Planned work goes through `implement`, whose implementation agents follow this skill. Choose slices as described in `feature`'s Slicing: vertical by default.
 
 ## Steps
 
@@ -13,7 +13,7 @@ Build one thin slice at a time, and leave the system working after each one. Pla
 2. **Test** it, writing a test first if nothing covers the piece (see `tdd`). Run the tests before you have written about 100 lines.
 3. **Simplify.** Reread the diff top to bottom as a newcomer would. Cut every line, parameter, branch and type the task doesn't need; inline a helper that only renames one line; rename anything you had to stop and think about; flatten nesting into early returns. Done when each procedure reads as a short sequence of named steps and nothing left can go without losing behaviour. Run the tests again.
 4. **Verify** with the repository's own commands: tests, build, type check where the stack has one, and lint. Re-run a command only after the code has changed since its last clean run.
-5. **Commit** the slice (see `git`), then move on to the next one. Under `coordinate`, leave it uncommitted: the coordinator commits.
+5. **Commit** the slice (see `git`), then move on to the next one. Under `implement`, leave it uncommitted: `implement` commits.
 
 ## Rules
 
@@ -28,4 +28,4 @@ Build one thin slice at a time, and leave the system working after each one. Pla
 
 ## Done when
 
-Every slice was tested and committed, the full suite and build pass, the feature works end to end, and nothing is left uncommitted (except under `coordinate`, which commits).
+Every slice was tested and committed, the full suite and build pass, the feature works end to end, and nothing is left uncommitted (except under `implement`, which commits).
