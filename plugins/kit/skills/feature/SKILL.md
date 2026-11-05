@@ -10,7 +10,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 ## Steps
 
-1. **Research.** Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix search QUERY` and then `tix context REF` on each hit, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
+1. **Research.** Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix ls --all` and then `tix context REF` on each note near the ask, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
 2. **Talk it through.** Ask one question at a time with `AskUserQuestion` as a choice ([asking](../../references/asking.md)), with your best guess as the recommended option. Cover:
    - who it's for and what they get
    - the approach
