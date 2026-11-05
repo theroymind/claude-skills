@@ -53,7 +53,7 @@ Small agnostic parts, assembled at the call site into the thing needed, over one
 
 ## Cheap
 
-Static reasoning about what the code does at scale. Every finding names the scale that makes it matter; `perf` owns measurement, and a finding whose fix is a trade-off recommends measuring rather than asserting.
+Static reasoning about what the code does at scale. Every finding names the scale that makes it matter. A finding whose fix is a trade-off recommends measuring rather than asserting.
 
 - **Work in the hot path.** Allocation, string building, regex compilation, logging, synchronous I/O inside a per-frame, per-request or per-row loop.
 - **Shape mismatch.** A lookup in a list where a map is due, nested loops over the same collection, a sort or a full scan inside a loop, a recomputation of a value the loop doesn't change.

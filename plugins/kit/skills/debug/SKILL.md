@@ -9,7 +9,7 @@ When something breaks, stop feature work and keep the evidence: error output, lo
 
 ## Steps
 
-1. **Reproduce.** Make it fail on demand with the repository's focused-test command (see `tdd`). Run the failing test on its own to rule out interference from other tests. If it won't reproduce, work out which kind of failure it is:
+1. **Reproduce.** Make it fail on demand with the repository's focused-test command. Run the failing test on its own to rule out interference from other tests. If it won't reproduce, work out which kind of failure it is:
    - *Timing*: add timestamps around the suspect area, widen race windows with delays, run under load.
    - *Environment*: compare runtime versions, OS, environment variables and data (empty versus populated). Try a clean environment such as CI.
    - *State*: look for state leaking between tests or requests (globals, singletons, shared caches). Run the scenario alone and then after other operations.

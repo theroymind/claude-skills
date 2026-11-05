@@ -12,7 +12,7 @@ Builds one task at a time from the tasks `feature` wrote, and commits each one o
 
 1. **Pick the task.** Use `$ARGUMENTS` if given, otherwise the tracker's ready command `CLAUDE.md` names, such as `tix ready`. Read it with the show command (`tix show REF`) and read its feature the same way. Tell the user which task you picked, in one line.
 2. **Build it** by the task's `scope`:
-   - `small`: build it yourself, following `build` and `tdd`.
+   - `small`: build it yourself, following `build`.
    - `medium` or `large`: dispatch one `kit:implementor`. Write its Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts can get one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built.
 3. **Verify.** Run the repo's test and check commands yourself; this is the gate run that counts. Read `git diff` against the task's criteria and the brief's out of scope list. Send gate failures back to the implementor with SendMessage, then verify again.
 4. **Review** when the task has `review: true`. Dispatch one `kit:reviewer` with the repo path and the brief's path, or the task ref for a small task. Send the findings worth acting on back to the implementor, or fix them yourself on a small task, then verify again.
@@ -22,7 +22,7 @@ Builds one task at a time from the tasks `feature` wrote, and commits each one o
 
 ## Brief
 
-The implementor already knows its method (`build`, `tdd`), leaves the tree uncommitted, and loads the repo's `CLAUDE.md` on its own. The brief covers what it can't know:
+The implementor already knows its method (`build`), leaves the tree uncommitted, and loads the repo's `CLAUDE.md` on its own. The brief covers what it can't know:
 
 - **Where**: the repo path and the task ref.
 - **Read first**: the task and its feature by ref, read with the tracker's show command, never paraphrased. Then the commits worth reading with `git show HASH`, and the existing files, procedures and types to build on. The feature's description is the contract: the agent builds its types and boundaries as written.
