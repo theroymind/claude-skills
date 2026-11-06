@@ -1,7 +1,7 @@
 ---
 name: feature
-description: Plans a feature in one conversation, from research to a short feature doc and its tasks. Use when the user asks to plan, scope or design a feature, or wants to log an idea.
-argument-hint: [feature or ask]
+description: Plans a feature in one conversation, from research to a short feature doc and its tasks. Use when the user asks to plan, scope or design a feature, hands over a ticket URL to plan from, or wants to log an idea.
+argument-hint: [feature, ask or ticket URL]
 ---
 
 # Feature
@@ -10,7 +10,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 ## Steps
 
-1. **Research.** Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix ls --all` and `tix docs ls`, then `tix context REF` on each note near the ask, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
+1. **Research.** When the ask is a ticket URL or id from an outside tracker, read that ticket first with the session's tracker tools: its title, description and criteria become the ask, and its id and URL become the feature's external ref. Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix ls --all` and `tix docs ls`, then `tix context REF` on each note near the ask, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
 2. **Talk it through.** Ask one question at a time with `AskUserQuestion` as a choice ([asking](../../references/asking.md)), with your best guess as the recommended option. Cover:
    - who it's for and what they get
    - the approach
@@ -21,7 +21,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 3. **Write the feature doc.** Use plain, casual words, in the two sections of Notes.
 4. **Break it into tasks.** Each task is one slice (Slicing) and has the same two sections. Its description names the files it likely touches, what to check by hand, and in one line why it does or doesn't get a review. Set its dependencies, `scope` and `review` (Task sizing).
 5. **Review.** Show the doc and every task in the chat in full and end the turn asking for approval as a review ([asking](../../references/asking.md)). Revise until the user approves.
-6. **Save.** Write through the tracker: for tix, `tix add --type feature TITLE`, `tix add --type task --parent FEATURE TITLE`, `tix dep` and `tix set`, with the prose written by hand under the properties. Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Run the tracker's lint and commit the notes.
+6. **Save.** Write through the tracker: for tix, `tix add --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --type task --parent FEATURE TITLE`, `tix dep` and `tix set`, with the prose written by hand under the properties. Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Run the tracker's lint and commit the notes.
 
 ## Notes
 
