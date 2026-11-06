@@ -25,6 +25,10 @@ For a quick fix (a few lines, nothing to decide), go straight to `build`.
 - `retro`: looking back on a session
 - `agent-docs`: writing skills, `CLAUDE.md` or `AGENTS.md`
 
+## Evals
+
+Run `plugins/kit/evals/run.sh` with any `claude plugin eval` options, such as `--case 'review-*' --runs 1`. It judges with Sonnet, runs each case's scaffold, allows Bash, and puts the real `node` binary on `PATH`, since the eval sandbox cannot follow fnm's per-shell symlink. `git` inside a run needs a real binary ahead of `/usr/bin/git`, such as Homebrew's.
+
 ## Language rules
 
 `plugins/kit/rules/<extension>.md` holds the rules for one language, scoped with `paths` frontmatter. Run `/kit:setup` in a project to pick languages and copy their rules into `.claude/rules/kit/`, where Claude Code loads each one whenever a matching file is read or edited. Project-specific exceptions go in the project's `CLAUDE.md`.
