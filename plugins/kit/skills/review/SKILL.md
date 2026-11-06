@@ -64,21 +64,22 @@ Static reasoning about what the code does at scale. Every finding names the scal
 
 ## Findings
 
-Ranked and numbered, so the caller can answer with numbers. Each finding carries a location, the evidence, the consequence, and the move:
+One table, ranked and numbered, so the caller can answer with numbers. Size is the size of the fix: S (a line or two), M (one function or file), L (several files or a boundary). Issue is the problem and its consequence in one sentence; Fix is the move in one sentence. A finding that needs more gets a short note under the table, keyed by its number.
 
 ```markdown
 ## Findings
 
-1. **Crew reads the job board's internal list** — `src/crew.js:42`
-   `crew.tick` iterates `board._jobs` to find idle work, so the board can't change its storage without breaking crew. Change: add `board.next_open(kind)` and call it here.
-2. **One render allocates a closure per cell** — `src/grid.js:118`
-   `cells.map(c => () => draw(c))` runs per frame over 4,000 cells. Change: draw in the loop directly, or build the closures once when the grid changes.
+| # | File | Size | Issue | Fix |
+|---|------|------|-------|-----|
+| 1 | `src/crew.js:42` | M | `crew.tick` iterates `board._jobs`, so the board can't change its storage without breaking crew. | Add `board.next_open(kind)` and call it here. |
+| 2 | `src/grid.js:118` | S | `cells.map(c => () => draw(c))` allocates a closure per cell, per frame, over 4,000 cells. | Draw in the loop directly, or build the closures once when the grid changes. |
 
 Seen, no action: the `Hotel` import in `economy.js` is unused since this change.
 ```
 
 - A finding without a concrete change is an observation; cut it or find the move.
-- Bugs go first, marked **Bug** in the title; a bug that today's data can't reach is marked **Latent** and says what unlocks it.
+- Bugs go first, with Issue starting **Bug:**; a bug that today's data can't reach starts **Latent:** and says what unlocks it.
+- Escape a `|` inside a cell as `\|` so the table holds together.
 - Clean is a valid result: "No findings" with one line on what was checked.
 
 ## Done when
