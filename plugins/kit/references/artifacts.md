@@ -11,6 +11,7 @@ Where the kit's skills read and write their artifacts.
 | Tasks | `docs/tasks/<task>.md` |
 | Ideas | `docs/ideas/<idea>.md` |
 | Vault notes and their rules | `docs/`, with the rules in `docs/README.md` |
+| Review profile | `.claude/kit/review.md` |
 
 ## Project overrides
 
