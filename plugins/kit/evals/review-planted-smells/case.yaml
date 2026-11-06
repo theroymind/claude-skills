@@ -31,7 +31,7 @@ graders:
     weight: 3
     focus: trace
     criteria: |
-      Pass only if the final message is a numbered list of findings, each with a file and line reference and a concrete change to make, and the list includes all three of:
+      Pass only if the final message is a numbered table of findings, each with a file and line reference and a concrete change to make, and the table includes all three of:
       - crew.js reaching into the board's private `_jobs` array (coupling to board internals); the suggested change adds an operation on Board rather than reading `_jobs`.
       - the `urgent` boolean parameter on `assign` switching between two unrelated behaviours.
       - `wagesByJob` doing a `jobs.find` inside the loop over crews (a list lookup per crew, quadratic at 5,000 crew), with a map or index suggested.
