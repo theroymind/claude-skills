@@ -6,7 +6,7 @@ J
 cat > CLAUDE.md <<'J'
 # crewsim
 
-A hotel crew simulation. Modules: `board` owns jobs, `crew` owns crew members and their AI, `payroll` owns wages. Dependencies point `payroll → crew → board`. Run `node --test` before reporting.
+A hotel crew simulation. Modules: `hotel` runs the simulation loop, `board` owns jobs, `crew` owns crew members and their AI, `payroll` owns wages. Dependencies point `hotel → payroll → crew → board`. A large hotel runs 5,000 crew. Run `node --test` before reporting.
 J
 cat > src/board.js <<'J'
 export class Board {
@@ -32,6 +32,15 @@ export function wages(crews) {
   let total = 0;
   for (const crew of crews) total += crew.wage * crew.hoursWorked;
   return total;
+}
+J
+cat > src/hotel.js <<'J'
+import { tick } from './crew.js';
+import { wages } from './payroll.js';
+
+export function step(hotel) {
+  tick(hotel.crews, hotel.board);
+  hotel.wageBill = wages(hotel.crews);
 }
 J
 cat > test/crew.test.js <<'J'

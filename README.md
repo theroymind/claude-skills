@@ -20,7 +20,7 @@ For a quick fix (a few lines, nothing to decide), go straight to `build`.
 ## Along the way
 
 - `debug`, `ui`: while implementing
-- `review`: findings on a change's bugs, shape and cost, run by `implement` on tasks marked for review or by hand on any diff
+- `review`: findings on a change's bugs, shape and cost, run by `implement` on tasks marked for review or by hand on any diff or pull request. A project's review profile (`.claude/kit/review.md`, written by `/kit:setup`) adds its own rules as lenses, and says where pull request context, tickets and posted comments come from
 - `commit`, `git`: saving and shipping work
 - `retro`: looking back on a session
 - `agent-docs`: writing skills, `CLAUDE.md` or `AGENTS.md`

@@ -10,11 +10,16 @@ Reads a change the way a second engineer would and returns **findings**: each on
 
 ## Steps
 
-1. **Scope.** Take the target from `$ARGUMENTS`: a diff, a PR number, a branch, or a path. With none, review the working tree against the base branch (`git diff <base>...HEAD` plus uncommitted changes). Read `git diff --stat`, then every hunk. Then read past the diff: each changed public surface's callers and callees, far enough to see every boundary the change crosses. If the change belongs to a feature, read the feature's description; its types and boundaries are the contract the change is held to. When the target is a module rather than a change, list what it owns before reading for problems: each group of functions and the state it keeps. Done when every changed file and every boundary it crosses has been read.
-2. **Look through each lens.** Walk the change once per lens (Correct, Modular, Composed, Cheap) and write down every candidate, with the line that triggered it. The Correct pass is a hunt, not a glance: for each procedure, pick the inputs its callers can send and the ones today's data never does, and follow them through.
-3. **Verify.** For each candidate, confirm the problem in the code rather than the diff: trace a concrete call path or input that hits it. For a cost candidate, name the scale at which it matters (per frame, per request, per row, n of what). A candidate that doesn't survive is dropped; the review's value is that every finding is real.
-4. **Rank.** Order by consequence: a bug that today's inputs can hit, a bug that waits on a planned change, then a boundary the change damages (a contract broken, a dependency reversed, a leak of internals), then coupling that will spread, then cost at a scale the project reaches, then local shape. Keep the findings worth acting on; a nit that changes nothing for the next reader is cut.
-5. **Report** in the Findings format, and end the turn without editing. Under `implement`, the report is the whole final message. Standalone, end the turn asking which findings to apply, as a review ([asking](../../references/asking.md)): "Reply with the numbers to apply."
+1. **Scope.** Take the target from `$ARGUMENTS`: a diff, a PR number, a branch, or a path. When the target is a pull request or merge request, follow [pull requests](references/pull-request.md) first; it sets up the worktree, the ticket and the readiness checks. With no target, review the working tree against the base branch (`git diff <base>...HEAD` plus uncommitted changes). Read `git diff --stat`, then every hunk. Then read past the diff: each changed public surface's callers and callees, far enough to see every boundary the change crosses. If the change belongs to a feature or ticket, read it; its acceptance criteria, types and boundaries are the contract the change is held to. When the target is a module rather than a change, list what it owns before reading for problems: each group of functions and the state it keeps. Done when every changed file and every boundary it crosses has been read.
+2. **Load the profile.** Find the project's review profile at the location in [artifacts](../../references/artifacts.md) and apply it as [profile](references/profile.md) says. With none, the four lenses below are the whole review. Done when every file the profile names for the changed paths has been read.
+3. **Look through each lens.** Walk the change once per lens (Correct, Modular, Composed, Cheap, then each lens the profile adds) and write down every candidate, with the line that triggered it. The Correct pass is a hunt, not a glance: for each procedure, pick the inputs its callers can send and the ones today's data never does, and follow them through.
+4. **Verify.** Every candidate passes all three checks or is dropped; the review's value is that every finding is real.
+   - **Real.** Confirm the problem in the code: trace a concrete call path or input that hits it. For a cost candidate, name the scale at which it matters (per frame, per request, per row, n of what).
+   - **Introduced.** Read the finding's lines in the diff hunk, which shows what the change put there; the file alone cannot. A problem on a line the change left alone is a follow-up. Code the change deleted is cited by its old line (`file.js:old 44`). A comment the change made false is anchored to the line that made it false.
+   - **Fix resolves.** Every identifier in the Fix exists where the fix puts it.
+5. **Check claims.** Every comment, doc line and test name the change adds is a claim to falsify. Check an inward claim (about the code it sits on) against that code. Search for an outward one (another module, a caller, a ticket, a library's guarantee), since nothing in the diff can disprove it. A claim you cannot confirm is a finding: cite it or delete it.
+6. **Rank.** Order by consequence: a bug that today's inputs can hit, a bug that waits on a planned change, then a boundary the change damages (a contract broken, a dependency reversed, a leak of internals), then coupling that will spread, then cost at a scale the project reaches, then local shape. Keep the findings worth acting on; a nit that changes nothing for the next reader is cut. Then read the list once for two findings that contradict each other, and settle them.
+7. **Report** in the Findings format, and end the turn without editing. Under `implement`, the report is the whole final message. For a pull request, end as [pull requests](references/pull-request.md) says. Otherwise end the turn asking which findings to apply, as a review ([asking](../../references/asking.md)): "Reply with the numbers to apply."
 
 ## Correct
 
@@ -26,7 +31,7 @@ Does the code do what its callers assume, for every input they can send, includi
 - **Order of operations.** A fallible step before a branch that doesn't need it; a check after the write it should guard; a state read before the update that changes it.
 - **State.** For each state machine or lifecycle, the transition that isn't handled, the state nothing resets, the resource nothing releases.
 - **Numbers.** Float equality, depth or z values that coincide, integer division, unit mismatches, overflow at the project's actual sizes.
-- **Weak or missing tests.** A test that passes for the wrong reason (it asks for n and checks element 0; it mocks the thing under test), or logic with branching the tests never reach.
+- **Tests sized to the risk.** A test that passes for the wrong reason (it asks for n and checks element 0; it mocks the thing under test), or logic with branching the tests never reach. Each missing test names the realistic failure it would catch, or it isn't asked for, and is anchored to the line of the branch it would cover. Tests the change adds that would all fail for one bug, or that prove what a cheaper test already proves, are redundant; propose merging them only when the merged test catches every failure the originals did.
 
 ## Modular
 
@@ -75,13 +80,18 @@ One table, ranked and numbered, so the caller can answer with numbers. Size is t
 | 2 | `src/grid.js:118` | S | `cells.map(c => () => draw(c))` allocates a closure per cell, per frame, over 4,000 cells. | Draw in the loop directly, or build the closures once when the grid changes. |
 
 Seen, no action: the `Hotel` import in `economy.js` is unused since this change.
+
+Follow-up: `src/payroll.js:12` rounds each wage before summing, which predates this change.
 ```
 
 - A finding without a concrete change is an observation; cut it or find the move.
 - Bugs go first, with Issue starting **Bug:**; a bug that today's data can't reach starts **Latent:** and says what unlocks it.
 - Escape a `|` inside a cell as `\|` so the table holds together.
+- A problem the change didn't introduce goes on a **Follow-up** line under the table, never in it.
+- **Blocking:** opens the Issue of a finding that would stop a merge on its own, such as a pull request's failing CI; it ranks above bugs.
+- A project rule from the profile is cited by its file in the Issue.
 - Clean is a valid result: "No findings" with one line on what was checked.
 
 ## Done when
 
-Every changed file and crossed boundary has been read, every finding is verified in the code with a location and a change, the list is ranked, and nothing was edited.
+Every changed file and crossed boundary has been read, every lens the profile adds has been walked, every finding is real, introduced by the change and carries a location and a change, every claim the change adds has been checked, the list is ranked, and nothing was edited.
