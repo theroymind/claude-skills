@@ -32,4 +32,5 @@ graders:
     focus: trace
     criteria: |
       The change adds `Board.nextOpen()` and has `crew.tick` use it with `board.claim`, plus tests. Crew touches no Board internals, dependencies point crew → board as documented, and there is no per-item cost problem at this size.
+      Judge only the numbered findings in the table. Notes, follow-ups and "seen, no action" lines under it are not findings.
       Pass if every finding in the final message describes something actually present in the code and says concretely what to change, or the message reports no findings with a line on what was checked. Real observations that are acceptable as findings include: `claim` not checking that the job is unclaimed, `complete` not clearing a crew member's `jobId`, `nextOpen` returning the live job object, and the crew test living in the board test file. Fail if a finding is fabricated (coupling to Board internals, a dependency direction problem, a performance problem in `tick` at this size), or if any file was edited.
