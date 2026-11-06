@@ -18,15 +18,20 @@ One conversation that ends in two things: a feature doc anyone can read in a min
    - the types, modules and boundaries it adds or changes, sized against where the project is heading
 
    Done when you can predict the user's next three answers and nothing is left open.
-3. **Write the feature doc.** Use plain, casual words, in the two sections of Notes.
-4. **Break it into tasks.** Each task is one slice (Slicing) and has the same two sections. Its description names the files it likely touches, what to check by hand, and in one line why it does or doesn't get a review. Set its dependencies, `scope` and `review` (Task sizing).
+3. **Write the feature doc.** Use plain, casual words, in the sections of Notes, starting from the project's feature template when it has one.
+4. **Break it into tasks.** Each task is one slice (Slicing), starting from the project's task template when it has one. Write its description, files and criteria as Notes says. Set its dependencies, `scope` and `review` (Task sizing).
 5. **Review.** Show the doc and every task in the chat in full and end the turn asking for approval as a review ([asking](../../references/asking.md)). Revise until the user approves.
 6. **Save.** Write through the tracker: for tix, `tix add --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --type task --parent FEATURE TITLE`, `tix dep` and `tix set`, with the prose written by hand under the properties. Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Run the tracker's lint and commit the notes.
 
 ## Notes
 
-- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way. `## Acceptance criteria` is a checklist of things you can see or test. Settle every question in the conversation, so the doc holds only answers.
-- **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and the same two sections.
+- **One job per part.** Nothing in a note says what another part already says. If a sentence in a description would pass as a criterion, make it one and cut it from the description.
+- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. `## Acceptance criteria` is a checklist of things you can see or test. Settle every question in the conversation, so the doc holds only answers.
+- **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and these sections:
+  - `## Description`: two to four sentences of prose for whoever builds it, saying what changes, why, the one decision that isn't obvious, and in half a sentence why it does or doesn't get a review. No lists.
+  - `## Files`, when the project's tracker reads one (tix's `files_heading`): the paths it likely touches, one per item.
+  - `## Acceptance criteria`: three to seven criteria, each one thing you can see or test, small enough to tick as soon as it lands, in roughly the order it gets built. A check by hand is a criterion, such as "In the boss fight you see the camera glide over the mage's shoulder".
+- **Criteria, not subtasks.** Ticked criteria are the progress a tracker's views show. Make a subtask only for a piece that needs its own dependency, its own review, or could be built in parallel.
 - **Idea.** A summary and free text. It becomes a feature once it's worked out.
 - **Lifetime.** A feature and its tasks live only while they're being built: `implement` deletes them once the feature is done, so the code, and any architecture docs the project keeps, stay the only truth.
 
