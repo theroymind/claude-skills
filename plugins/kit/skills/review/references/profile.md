@@ -7,6 +7,7 @@ A project's review profile tells `review` what the project adds to the four lens
 - **Lenses.** For each row whose pattern matches a changed file, read what it names and walk the change once more with those rules as an extra lens. A row naming a skill or agent runs it on the change and treats its findings as candidates. Every candidate goes through Verify like any other.
 - **Exceptions win.** Where the profile says the project differs from a kit default, the project's rule holds.
 - **Tests.** The profile's test conventions and coverage bar set what Tests sized to the risk asks for.
+- **Decisions.** Where the choices already made for a piece of work are recorded. Verify drops a finding that reverses one.
 - **Context, Ticket, Posting.** Read by [pull requests](pull-request.md).
 - **Missing targets.** A file, skill or command the profile names that does not exist gets one line in the report, and the review carries on without it.
 
@@ -25,12 +26,16 @@ The command or skill that loads a pull request's context, and what it returns.
 
 Where tickets live, and how to fetch one by its id.
 
+## Decisions
+
+Where the decisions already made for a ticket or feature are recorded, such as a section of its plan.
+
 ## Lenses
 
 | Applies to | Read | Notes |
 |---|---|---|
 | `**/*.rb` | `.agents/rules/backend/global.md` | |
-| `app/javascript/**` | the `standards-reviewer` agent | Pass it the base sha. |
+| `app/javascript/**` | the `frontend-reviewer` agent | Pass it the base sha. |
 
 ## Tests
 
