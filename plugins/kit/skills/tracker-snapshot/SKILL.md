@@ -7,29 +7,30 @@ description: Write a read-only snapshot of an outside issue tracker project to .
 
 Write one JSON file that describes a tracker project: its issues, their parents, their dependencies and their merge requests. The Herdr `work-map` mod reads it and joins it to tix tickets by `external_id`. Read the tracker only. Never change anything in it.
 
-## Run the sync script
-
-The Herdr `work-map` mod ships a script that does this for Linear, at `~/.config/herdr-app/mods/work-map/bin/tracker-sync`. When that file exists, use it first. When it doesn't, skip to the steps by hand.
+## Prefer the panel's sync
 
 1. Find the tix root. It is the nearest folder above the current one that has `.tix/config.yml`.
-2. Run the script from there:
+2. Read `<tix root>/.tix/tracker-config.json`. It says which tracker this repo uses and how:
 
-   ```sh
-   python3 -I ~/.config/herdr-app/mods/work-map/bin/tracker-sync --root <tix root>
+   ```json
+   {
+     "provider": "linear",
+     "scope": { "type": "project", "ref": "<project id or URL>" },
+     "key_pattern": "[A-Z][A-Z0-9]*-\\d+",
+     "reviews": [{ "host": "git.example.com", "type": "gitlab" }],
+     "start": { "base_branch": "main", "branch_skill": "create-branch", "worktree": true }
+   }
    ```
 
-   - If the user named a project id or project URL, add `--project <id or URL>`.
-   - If the user named an issue, add `--issue <KEY>`.
-   - If the user asked for a full or fresh sync, add `--full`.
-   - With none of these, the script reuses the project in the existing `tracker.json`. If there is none, it takes the issue key from the branch name.
-3. Read the exit code.
-   - **0**: it worked. It prints a line like `synced 48 items (3 changed)`. Tell the user that line and which project it used. Then stop.
-   - **2**: no Linear API key is stored. Tell the user they can store one with `security add-generic-password -s linear-api-key -a "$USER" -w`. Then make the snapshot by hand with the steps below.
-   - **1**: the sync failed. Show the user the error line and stop. Don't fall back to the steps below, because the cause is something other than the missing key.
+   - `provider` is `linear` or `github`. Only `provider` is required.
+   - `scope` is a project (`ref`: a Linear project id or URL, or `owner/repo` on GitHub) or a tree (`"type": "tree", "key": "<issue key>"`). Without it, the sync reuses the project in `tracker.json`, else the issue key in the branch.
+   - `reviews` lists the hosts whose MR/PR links count, each with `type` `gitlab` or `github`. Links on other hosts are dropped.
+   - `start` holds this repo's branch steps for the panel's Start button.
+3. If the file exists, the Herdr `work-map` panel syncs this repo itself: tell the user to press its refresh button. It does a full sync when the snapshot is over 24 hours old or points at another scope, else only changed issues. Linear reads its key from `LINEAR_API_KEY` or the keychain (`security add-generic-password -s linear-api-key -a "$USER" -w`); GitHub uses `gh`'s login. Then stop.
+4. If the file doesn't exist and the user wants the panel to sync, offer to write it with them: ask for the provider, the project and the review hosts. Never guess a project.
+5. Otherwise, or when the panel can't sync (no key, or the user asked you to do it), make the snapshot by hand below.
 
-The script makes a full sync when you pass `--full`, when the file is older than 24 hours, or when it points at a different project. Otherwise it only asks for issues changed since the last sync.
-
-## By hand, when there is no script or it exits 2
+## By hand
 
 ### Find the project
 
@@ -81,7 +82,7 @@ Write `<tix root>/.tix/tracker.json`, replacing any old one:
 
 - `source` is the tracker's name in lowercase.
 - `synced_at` is the current UTC time.
-- `viewer` is the current user. Leave it out if you can't find who that is. The script then makes a full sync next time.
+- `viewer` is the current user. Leave it out if you can't find who that is. The panel then makes a full sync next time.
 - `status` is one of `open`, `in_progress`, `in_review`, `done`, `canceled`. Map the tracker's own state names onto these.
 - `depends_on` lists the issues this one is blocked by.
 - `parent` is the parent issue's id, or null.
