@@ -10,7 +10,7 @@ Builds one task at a time from the tasks `feature` wrote, and commits each one o
 
 ## Steps
 
-1. **Pick the task.** Use `$ARGUMENTS` if given, otherwise the tracker's ready command `CLAUDE.md` names, such as `tix ready`. Read it with the show command (`tix show REF`) and read its feature the same way. Tell the user which task you picked, in one line.
+1. **Pick the task.** Use `$ARGUMENTS` if given, otherwise the tracker's ready command `CLAUDE.md` names, such as `tix ready`. Read it with the show command (`tix show REF`) and read its feature the same way. Mark it started (`tix set REF status=in_progress`) so trackers and panels show it as being worked on, then tell the user which task you picked, in one line.
 2. **Build it** by the task's `scope`:
    - `small`: load `kit:build` with the Skill tool and build it yourself, ticking each criterion (`tix tick REF N`) as soon as its code and tests pass.
    - `medium` or `large`: dispatch one `kit:implementor`. Write its Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts can get one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built.
