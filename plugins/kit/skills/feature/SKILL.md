@@ -46,9 +46,11 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 | `scope` | Means | `review` |
 |---|---|---|
-| `small` | A few files in one place, nothing to decide | `false` |
-| `medium` | One package or boundary, a decision or two | `true` when it changes a core type, crosses a package boundary, or carries logic with edge cases such as math, state or ordering |
-| `large` | Several packages, or new core types | `true` |
+| `small` | A few files in one place, nothing to decide | `none` |
+| `medium` | One package or boundary, a decision or two | `pending` when it changes a core type, crosses a package boundary, or carries logic with edge cases such as math, state or ordering |
+| `large` | Several packages, or new core types | `pending` |
+
+`review` is `none` (no review), `pending` (a review is due) or `done` (it passed); `implement` moves `pending` to `done`.
 
 Split a large task when it splits cleanly along Slicing.
 
