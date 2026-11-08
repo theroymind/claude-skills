@@ -21,7 +21,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 3. **Write the feature doc.** Use plain, casual words, in the sections of Notes, starting from the project's feature template when it has one.
 4. **Break it into tasks.** Each task is one slice (Slicing), starting from the project's task template when it has one. Write its description, files and criteria as Notes says. Set its dependencies, `scope` and `review` (Task sizing).
 5. **Review.** Show the doc and every task in the chat in full and end the turn asking for approval as a review ([asking](../../references/asking.md)). Revise until the user approves.
-6. **Save.** Write through the tracker: for tix, `tix add --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --type task --parent FEATURE TITLE`, `tix dep` and `tix set`, with the prose written by hand under the properties. Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Run the tracker's lint and commit the notes.
+6. **Save.** Write through the tracker: for tix, `tix add --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --type task --parent FEATURE --description D --acceptance A... --file PATH... --set scope=S --set review=R --set summary=TEXT TITLE` and `tix dep`. Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Run the tracker's lint and commit the notes.
 
 ## Notes
 

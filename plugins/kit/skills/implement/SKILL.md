@@ -10,7 +10,7 @@ Builds the tasks `feature` wrote in batches of ready tasks, in parallel, commits
 
 ## Steps
 
-1. **Pick the batch.** With `$ARGUMENTS`, the batch is that one task. Otherwise it is every task the tracker's ready command (`CLAUDE.md` names it, such as `tix ready`) lists for the feature: a ready task has no unfinished dependency, so the batch builds in parallel. Read each with the show command (`tix show REF`) and the feature the same way. Mark each started (`tix start REF`), and the feature too while it is still to do, so trackers and panels show them being worked on. Then tell the user which tasks you picked, in one line.
+1. **Pick the batch.** With `$ARGUMENTS`, the batch is that one task. Otherwise it is every task the tracker's ready command (`CLAUDE.md` names it, such as `tix ready`) lists for the feature: a ready task has no unfinished dependency, so the batch builds in parallel. Read each with its feature through the show command (`tix show REF --with-parent`). Mark each started (`tix start REF...`), and the feature too while it is still to do, so trackers and panels show them being worked on. Then tell the user which tasks you picked, in one line.
 2. **Build the batch** at once, each task by its `scope`:
    - `medium` or `large`: dispatch one `kit:implementor` per task, all before building anything yourself. Write each Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts gets one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built. Tasks or parts whose files overlap each get their own git worktree (`git worktree add -b <branch> ../<repo>-<task>`), merged back before Verify.
    - `small`: load `kit:build` with the Skill tool and build it yourself while the implementors run, ticking each criterion (`tix tick REF N`) as soon as its code and tests pass.
@@ -26,8 +26,8 @@ Builds the tasks `feature` wrote in batches of ready tasks, in parallel, commits
 The implementor already knows its method (`build`), leaves the tree uncommitted, and loads the repo's `CLAUDE.md` on its own. The brief covers what it can't know:
 
 - **Where**: the repo or worktree path and the task ref.
-- **Read first**: the task and its feature by ref, read with the tracker's show command, never paraphrased. Then the commits worth reading with `git show HASH`, and the existing files, procedures and types to build on. The feature's description is the contract: the agent builds its types and boundaries as written.
-- **Scope**: the task's criteria, numbered, and the tracker's tick command, such as `tix tick REF N`.
+- **Read first**: the task and its feature by ref, read with the tracker's show command (`tix show REF --with-parent` reads both), never paraphrased. Then the commits worth reading with `git show HASH`, and the existing files, procedures and types to build on. The feature's description is the contract: the agent builds its types and boundaries as written.
+- **Scope**: the task's criteria, numbered, and the tracker's tick command, such as `tix tick REF N...`, with `tix ac ls --open REF` to list what is still unticked.
 - **Out of scope**: other tasks, including the ones building beside it in the same tree, and files this task leaves alone.
 - **Open choices**: anything the feature left to judgement. The agent picks the simplest sound option and reports it. If the feature's shape doesn't fit, it stops and reports that.
 - **Tests**: the behaviour to cover, and existing tests likely to break, which get updated without being weakened.
