@@ -1,44 +1,44 @@
 ---
 name: implement
-description: Builds a planned task, routed by its scope. A small task is built in the session; a medium or large one goes to an implementor agent, plus a reviewer when the task asks for one. Use when picking up the next task or building a feature's tasks.
+description: Builds a feature's planned tasks, independent ones in parallel, routed by scope. A small task is built in the session; a medium or large one goes to an implementor agent. The feature gets one review at the end from parallel reviewers. Use when picking up the next task or building a feature's tasks.
 argument-hint: [task]
 ---
 
 # Implement
 
-Builds one task at a time from the tasks `feature` wrote, and commits each one once. A change too small to need a task goes to `build`.
+Builds the tasks `feature` wrote in batches of ready tasks, in parallel, commits each task once, and reviews the feature once at the end. A change too small to need a task goes to `build`.
 
 ## Steps
 
-1. **Pick the task.** Use `$ARGUMENTS` if given, otherwise the tracker's ready command `CLAUDE.md` names, such as `tix ready`. Read it with the show command (`tix show REF`) and read its feature the same way. Mark it started (`tix start REF`), and its feature too while the feature is still to do, so trackers and panels show them being worked on. Then tell the user which task you picked, in one line.
-2. **Build it** by the task's `scope`:
-   - `small`: load `kit:build` with the Skill tool and build it yourself, ticking each criterion (`tix tick REF N`) as soon as its code and tests pass.
-   - `medium` or `large`: dispatch one `kit:implementor`. Write its Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts can get one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built.
-3. **Verify.** Run the repo's test and check commands yourself; this is the gate run that counts. Read `git diff` against the task's criteria and the brief's out of scope list, and untick (`tix untick REF N`) any ticked criterion the diff doesn't meet. Send gate failures back to the implementor with SendMessage, or fix them yourself on a small task, then verify again. When a criterion isn't met and the fix isn't obvious, don't tick it or work around it: report the gap and ask with `AskUserQuestion` before going on ([asking](../../references/asking.md)). When unsure whether a gap matters, ask; a question costs less than a wrong assumption.
-4. **Review** when the task's `review` is `pending`. Mark it in review (`tix review REF`), then dispatch one `kit:reviewer` with the repo path and the brief's path, or the task ref for a small task. Send the findings worth acting on back to the implementor, or fix them yourself on a small task, then verify again and mark the review passed (`tix set REF review=done`). When the user asks for one review over the whole feature instead, skip this step per task and review once after the last task's commit: mark the feature in review (`tix review FEATURE`), review the feature's commits, commit the fixes with the feature's `Ticket:` trailer, then set `review=done` on every task the review covered and the feature back to started (`tix start FEATURE`). Panels show a feature in review across all of its tasks.
-5. **Commit** once. Tick any criterion the change meets that is still unticked, mark the task done (`tix done REF`), and commit the code and the ticks together with a `Ticket: REF` trailer. When `CLAUDE.md` says where the project documents its architecture, such as a `CLAUDE.md` in each package, a change that moves a module's shape updates that doc in the same commit.
-6. **Report** in the chat: what changed, the decisions made, anything flagged, the review's findings with what was fixed and what was left, and what the user must check by hand, such as visuals or feel. Name the commit as `git show HASH` and the task as `tix show REF`. End the turn asking for approval as a review ([asking](../../references/asking.md)).
-7. **Approve** from the reply. For changes, set the task back to started (`tix start REF`), then brief a fresh implementor that starts from `git show HASH`, or fix it yourself on a small task, then repeat from step 3 and commit the fix with the same trailer. On approval, go back to step 1 for the feature's next ready task.
+1. **Pick the batch.** With `$ARGUMENTS`, the batch is that one task. Otherwise it is every task the tracker's ready command (`CLAUDE.md` names it, such as `tix ready`) lists for the feature: a ready task has no unfinished dependency, so the batch builds in parallel. Read each with the show command (`tix show REF`) and the feature the same way. Mark each started (`tix start REF`), and the feature too while it is still to do, so trackers and panels show them being worked on. Then tell the user which tasks you picked, in one line.
+2. **Build the batch** at once, each task by its `scope`:
+   - `medium` or `large`: dispatch one `kit:implementor` per task, all before building anything yourself. Write each Brief to a file outside the repo, such as `<scratchpad>/<task>.md`, and pass the agent only that path. A large task with independent parts gets one implementor per part; a part that builds on another runs after it, and its brief says what the earlier part built. Tasks or parts whose files overlap each get their own git worktree (`git worktree add -b <branch> ../<repo>-<task>`), merged back before Verify.
+   - `small`: load `kit:build` with the Skill tool and build it yourself while the implementors run, ticking each criterion (`tix tick REF N`) as soon as its code and tests pass.
+3. **Verify** once the batch's builds finish and any worktrees are merged back, since a gate run while another agent is mid-edit in the same tree fails for nothing. Run the repo's test and check commands yourself; this is the gate run that counts. Read the task's part of `git diff` against its criteria and its brief's out of scope list, and untick (`tix untick REF N`) any ticked criterion the diff doesn't meet. Send gate failures back to the task's implementor with SendMessage, or fix them yourself on a small task, then verify again. When a criterion isn't met and the fix isn't obvious, don't tick it or work around it: report the gap and ask with `AskUserQuestion` before going on ([asking](../../references/asking.md)). When unsure whether a gap matters, ask; a question costs less than a wrong assumption.
+4. **Commit** each task once, in its own commit. Tick any criterion the change meets that is still unticked, mark the task done (`tix done REF`), and commit the task's code and ticks together with a `Ticket: REF` trailer. When `CLAUDE.md` says where the project documents its architecture, such as a `CLAUDE.md` in each package, a change that moves a module's shape updates that doc in the same commit.
+5. **Report** the batch in the chat: per task, what changed, the decisions made, anything flagged, and what the user must check by hand, such as visuals or feel. Name each commit as `git show HASH` and each task as `tix show REF`. End the turn asking for approval as a review ([asking](../../references/asking.md)).
+6. **Approve** from the reply. For changes to a task, set it back to started (`tix start REF`), then brief a fresh implementor that starts from `git show HASH`, or fix it yourself on a small task, then repeat from step 3 and commit the fix with the same trailer. On approval, go back to step 1 for the next batch; once the feature has no ready task left, go to Review.
+7. **Review** the feature once, after its last task is approved, when any of its tasks has `review` `pending`. Mark the feature in review (`tix review FEATURE`). Dispatch the reviewers at once, each a `kit:reviewer` with the repo path, the feature ref, the feature's commit range, and the one lens it walks: Correct, Modular, Composed, Cheap, plus one more for the language rules and the lenses the project's review profile adds, when the change has any. Merge the findings, drop duplicates, and rank them. Fix the ones worth acting on with fresh implementors in parallel, one per group of findings that share no files, or yourself when small; run the gates, and commit the fixes with the feature's `Ticket:` trailer. Set `review=done` on every task the review covered and the feature back to started (`tix start FEATURE`). Report the findings, what was fixed and what was left, and ask for approval as in step 5. When the user asks for a review per task instead, review each task after Verify the same way, over its uncommitted diff, before its commit.
 8. **Finish the feature** once every task is done and the user confirms the feature's criteria: fold anything that must outlast the feature into the project's architecture docs, when it has them, delete the feature's doc and its tasks, and commit that as `Finish <feature>` with a `Ticket: REF` trailer. Its decisions and alternatives were brainstorming and go with it.
 
 ## Brief
 
 The implementor already knows its method (`build`), leaves the tree uncommitted, and loads the repo's `CLAUDE.md` on its own. The brief covers what it can't know:
 
-- **Where**: the repo path and the task ref.
+- **Where**: the repo or worktree path and the task ref.
 - **Read first**: the task and its feature by ref, read with the tracker's show command, never paraphrased. Then the commits worth reading with `git show HASH`, and the existing files, procedures and types to build on. The feature's description is the contract: the agent builds its types and boundaries as written.
 - **Scope**: the task's criteria, numbered, and the tracker's tick command, such as `tix tick REF N`.
-- **Out of scope**: other tasks, and files this task leaves alone.
+- **Out of scope**: other tasks, including the ones building beside it in the same tree, and files this task leaves alone.
 - **Open choices**: anything the feature left to judgement. The agent picks the simplest sound option and reports it. If the feature's shape doesn't fit, it stops and reports that.
 - **Tests**: the behaviour to cover, and existing tests likely to break, which get updated without being weakened.
 - **Gates**: the exact test and check commands, all passing before it reports.
 
 ## Messaging
 
-- An agent's final message is its report, delivered once as the notification that it finished. Read it, then go straight to Verify.
+- An agent's final message is its report, delivered once as the notification that it finished. Read it, then wait for the rest of the batch before Verify.
 - Message an agent only with work: findings to fix or a follow-up to build. An acknowledgement wakes it for nothing.
 - If an agent also messaged its report, the finish notification is the same report. Carry on.
 
 ## Done when
 
-Every task picked is committed, ticked, done and approved, and a finished feature is deleted with its tasks.
+Every task picked is committed, ticked, done and approved, the feature's review has run with its fixes committed, and a finished feature is deleted with its tasks.
