@@ -4,7 +4,7 @@ The branch of `review` for a pull request or merge request: the context it loads
 
 ## Before the lenses
 
-1. **Context.** Run the profile's Context step. With none, use the forge's CLI (`gh pr view` and `gh pr diff`, or `glab mr view` and `glab mr diff`) and check the head out in a new worktree beside the repo, so the user's checkout is never touched. Done when you hold the title, description, author, base, head sha, diff, CI state, conflict state, the worktree path, and the full body of every unresolved discussion.
+1. **Context.** Run the profile's Context step. With none, use the forge's CLI (`gh pr view` and `gh pr diff`, or `glab mr view` and `glab mr diff`) and check the head out in a new worktree under `.claude/worktrees/`, so the user's checkout is never touched. Done when you hold the title, description, author, base, head sha, diff, CI state, conflict state, the worktree path, and the full body of every unresolved discussion.
 2. **Ticket.** Fetch the ticket the branch or description names, through the profile's Ticket step or the tracker the project's instructions name. Its acceptance criteria outrank the author's description.
 3. **Readiness.** Each of these is a **Blocking:** finding with no file: failing CI, conflicts with the base, and an unresolved discussion no hunk addresses. To call a discussion addressed, judge from its full body and cite the hunk that addresses it.
 4. **Fit.** An acceptance criterion with no code or test behind it is a finding. So is a statement in the description that the diff contradicts; the diff wins. Work beyond the ticket gets a note.

@@ -17,7 +17,7 @@ To split a messy working tree, stage one logical change at a time by path and co
 
 ## Branches
 
-Keep the default branch deployable. Feature branches are short-lived: merge them within 1–3 days and delete them afterwards. Name them `feature/`, `fix/`, `chore/` or `refactor/` followed by a short description. Ship incomplete work behind a flag instead of keeping it on a long-lived branch. Never force-push a shared branch. Give each parallel agent its own worktree (`git worktree add ../repo-x feature/x`).
+Keep the default branch deployable. Feature branches are short-lived: merge them within 1–3 days and delete them afterwards. Name them `feature/`, `fix/`, `chore/` or `refactor/` followed by a short description. Ship incomplete work behind a flag instead of keeping it on a long-lived branch. Never force-push a shared branch. Give each parallel agent its own worktree under `.claude/worktrees/`, which the repo's `.gitignore` lists (`git worktree add .claude/worktrees/x feature/x`).
 
 ## Change summaries
 
