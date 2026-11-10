@@ -26,11 +26,11 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 ## Notes
 
 - **One job per part.** Nothing in a note says what another part already says. If a sentence in a description would pass as a criterion, make it one and cut it from the description.
-- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. `## Acceptance criteria` is a checklist of things you can see or test. Settle every question in the conversation, so the doc holds only answers.
+- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. `## Acceptance criteria` is a checklist of things you can see or test. Every check by hand goes here, such as "In the boss fight you see the camera glide over the mage's shoulder": the user confirms these when the feature finishes. Settle every question in the conversation, so the doc holds only answers.
 - **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and these sections:
   - `## Description`: two to four sentences of prose for whoever builds it, saying what changes, why, the one decision that isn't obvious, and in half a sentence why it does or doesn't get a review. No lists.
   - `## Files`, when the project's tracker reads one (tix's `files_heading`): the paths it likely touches, one per item.
-  - `## Acceptance criteria`: three to seven criteria, each one thing you can see or test, small enough to tick as soon as it lands, in roughly the order it gets built. A check by hand is a criterion, such as "In the boss fight you see the camera glide over the mage's shoulder".
+  - `## Acceptance criteria`: three to seven criteria, each one thing the agent building it can test, small enough to tick as soon as it lands, in roughly the order it gets built.
 - **Criteria, not subtasks.** Ticked criteria are the progress a tracker's views show. Make a subtask only for a piece that needs its own dependency, its own review, or could be built in parallel.
 - **Idea.** A summary and free text. It becomes a feature once it's worked out.
 - **Lifetime.** A feature and its tasks live only while they're being built: `implement` deletes them once the feature is done, so the code, and any architecture docs the project keeps, stay the only truth.
