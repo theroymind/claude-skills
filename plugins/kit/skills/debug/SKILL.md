@@ -25,8 +25,6 @@ Keep the fix free of unrelated changes, so it stays clear what fixed the bug.
 ## Triage hints
 
 - **A test fails after your change.** If you changed the code it covers, decide whether the test or the code is wrong. If you didn't, suspect a side effect through shared state, imports or globals. If the test was already flaky, look at timing, ordering and external dependencies.
-- **The build fails.** For a type error, read the code at the cited location. For an import error, check that the module exists and its exports match. Then check config syntax, installed dependencies and the runtime version.
-- **Runtime.** For a `null` or `undefined` access, trace where the value comes from. For a network or CORS error, check the URL, headers and server config. For a blank screen, check the error boundary and the console. For wrong behaviour with no error, log the data at each step.
 
 Take temporary logging out once the regression test guards the fix, and always remove logs that contain sensitive data. Error boundaries and error logging that records request context stay.
 

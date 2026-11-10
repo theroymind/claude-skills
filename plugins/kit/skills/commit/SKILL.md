@@ -6,7 +6,7 @@ allowed-tools: Bash(git:*)
 
 # Commit
 
-Pull the latest from master, stage all changes, and create a commit.
+Stage all changes, create a commit, and rebase it onto the latest default branch.
 
 ## Steps
 
@@ -18,7 +18,7 @@ Pull the latest from master, stage all changes, and create a commit.
    - The style of the repo's recent commits.
    - When the change is for a tracked task or ticket (one named in the conversation, the brief or the branch), a final line `Ticket: <id>` after a blank line, so the tracker can find the commit. Use the task's note name or ticket id exactly.
 4. **Commit** the changes.
-5. **Pull** the latest from master with rebase (`git pull origin master --rebase`) and resolve any conflicts.
+5. **Pull** the default branch with rebase (`git pull --rebase origin <default>`, where `<default>` comes from `git symbolic-ref --short refs/remotes/origin/HEAD` without its `origin/` prefix) and resolve any conflicts.
 
 ## Rules
 
