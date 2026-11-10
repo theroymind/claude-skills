@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Pull latest, stage, and commit all current changes
+description: Commits the current changes, split into one commit per logical change, and rebases onto the default branch. Use when the user asks to commit, or to split a messy working tree into atomic commits.
 allowed-tools: Bash(git:*)
 ---
 
@@ -11,7 +11,7 @@ Stage all changes, create a commit, and rebase it onto the latest default branch
 ## Steps
 
 1. **Read** `git status`, `git diff` (staged and unstaged) and `git log --oneline -5` in parallel, to understand the changes and the commit style.
-2. **Stage** all changes with `git add .`.
+2. **Stage** all changes with `git add .`. When they hold more than one logical change (a refactor, a feature and a config change are three), commit each separately instead: stage one by path, and one change within a file with `git apply --cached` on a trimmed `git diff`. Aim for about 100 lines a commit; about 300 is fine for one logical change, and anything near 1000 gets split.
 3. **Write the message**:
    - First line: a concise summary of what changed and why.
    - For non-trivial changes, a blank line and then a short body with context.

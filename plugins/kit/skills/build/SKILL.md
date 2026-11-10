@@ -13,7 +13,8 @@ Build one thin slice at a time, and leave the system working after each one. Pla
 2. **Test** the behaviour that merits it: logic a reader could get wrong, a contract other code relies on, a case that has broken before. Skip tests that only cover lines or restate the code, since they break on every refactor and catch nothing. A bug fix starts with a test that reproduces the bug and fails before the fix. Run the tests before you have written about 100 lines.
 3. **Simplify.** Reread the diff top to bottom as a newcomer would. Cut every line, parameter, branch and type the task doesn't need; inline a helper that only renames one line; rename anything you had to stop and think about; flatten nesting into early returns. Done when each procedure reads as a short sequence of named steps and nothing left can go without losing behaviour. Run the tests again.
 4. **Verify** with the repository's own commands: tests, build, type check where the stack has one, and lint. Re-run a command only after the code has changed since its last clean run.
-5. **Commit** the slice (see `git`), then move on to the next one. A refactor, a feature and a config change are separate commits. Under `implement`, leave it uncommitted: `implement` commits the task once.
+5. **Commit** the slice with `commit`, then move on to the next one. Under `implement`, leave it uncommitted: `implement` commits the task once.
+6. **Report** what changed and why, the decisions made, what you noticed but didn't touch, and what the user or reviewer should check.
 
 ## Rules
 
