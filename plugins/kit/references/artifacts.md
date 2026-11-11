@@ -4,13 +4,15 @@ Where the kit's skills read and write their artifacts.
 
 ## Defaults
 
+A project with a `.tix/config.yml` keeps its features, tasks and ideas where that file says, and they are read and written through `tix`, never by path. The table is for a project without one, and it matches the vault `tix init` writes.
+
 | Artifact | Default location |
 |---|---|
 | Intent and pillars | `docs/intent.md`, `docs/pillars.md` |
-| Feature docs | `docs/<feature>.md` |
-| Tasks | `docs/tasks/<task>.md` |
+| Feature docs | `docs/features/<feature>/<feature>.md` |
+| Tasks | `docs/features/<feature>/tasks/<task>.md` |
 | Ideas | `docs/ideas/<idea>.md` |
-| Vault notes and their rules | `docs/`, with the rules in `docs/README.md` |
+| Note templates | `docs/templates/` |
 | Review profile | `.claude/kit/review.md` |
 
 ## Project overrides

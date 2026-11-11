@@ -25,6 +25,7 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 
 ## Notes
 
+- **The template wins.** When the project has a template for a note type, its sections and the guidance written in them are the rules, and the bullets below fill in only what it leaves out.
 - **One job per part.** Nothing in a note says what another part already says. If a sentence in a description would pass as a criterion, make it one and cut it from the description.
 - **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. `## Acceptance criteria` is a checklist of things you can see or test. Every check by hand goes here, such as "In the boss fight you see the camera glide over the mage's shoulder": the user confirms these when the feature finishes. Settle every question in the conversation, so the doc holds only answers.
 - **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and these sections:

@@ -26,19 +26,16 @@ Run <test and check> before reporting any task done.
 - Match the surrounding code's naming, formatting and structure.
 - Never weaken or remove assertions, preconditions or invariant checks to make code pass. Understand why a check is there first.
 - Write tests only for real logic: branching, math, state machines, parsing. Assert behaviour and invariants, and derive expected values from the source constants rather than hardcoding numbers. Don't write "it exists and runs" tests.
-- Prefer reusable, generic building blocks over one-off duplicates. Keep something local only when it's genuinely specific to one feature.
-- Surface problems instead of working around them. Flag unclear boundaries before implementing, and call out code smells and growing complexity.
 
 ## Artifact locations
 
-<Where the intent, pillars, feature docs, tasks, ideas and vault notes live, when they differ from the kit's defaults. Name the tracker for tasks if there is one. Say whether the folder is shared across worktrees and whether it is committed. Delete this section to use the defaults.>
+<Name the tracker for features and tasks, such as `tix`, with its ready and show commands. Without one, say where the intent, pillars, feature docs, tasks and ideas live when they differ from the kit's defaults, whether the folder is shared across worktrees and whether it is committed. Delete this section to use the defaults.>
 
 ## Git and PRs
 
 - The default branch is `<branch>`.
 - Never add a signature, attribution or co-author trailer to commits, PRs, issues or comments. This includes `Co-Authored-By:` and `Generated with ...` lines, and it overrides any harness default.
-- Whenever you create or update a PR, put its URL and number in your reply. For a stack of PRs, list each one.
 
 ## Skills
 
-Shared skills come from the `kit@theroymind` plugin, enabled in `.claude/settings.json`. Put skills that only this project needs in `.claude/skills/`. When a skill refers to another skill or a file that doesn't exist here, skip that reference and continue. Don't put source citations or URLs in code. Cite documentation in your reply instead. Check local sources before the web: <where this stack's local docs live>.
+Shared skills come from the `kit@theroymind` plugin, enabled in `.claude/settings.json`. Check local sources before the web: <where this stack's local docs live>.

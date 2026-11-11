@@ -1,6 +1,6 @@
 {
   "name": "kit",
-  "description": "Cross-project engineering workflow skills: spec, plan, implement, test, review, ship",
+  "description": "Cross-project engineering workflow skills: plan a feature, implement its tasks, review, debug, commit",
   "author": {
     "name": "Eric Roy"
   }
