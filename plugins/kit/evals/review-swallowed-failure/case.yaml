@@ -26,11 +26,20 @@ graders:
     focus: trace
     criteria: |
       The change adds `submitWageBill` to `src/payroll.js`. It wraps `client.post('/wage-bills', ...)` in a `try` with an empty `catch`, then resets every crew member's `hoursWorked` to 0 and returns `submitted: true`. When the post fails, the wage bill is lost: the hours are wiped and the caller is told it succeeded.
-      Pass only if the final message is a numbered table of findings whose first finding is this swallowed failure, labelled as a bug, naming `src/payroll.js` and the empty `catch`, and proposing that the failure reaches the caller (rethrow, or return `submitted: false` without resetting hours) instead of being ignored.
-      Fail if the finding is missing or ranked below a non-bug finding, or if any file was edited.
+      Pass if the final message reports this swallowed failure as a bug, names `src/payroll.js` and the empty `catch`, and proposes that the failure reaches the caller (rethrow, or return `submitted: false` without resetting hours). Fail otherwise.
+  - name: bug-ranked-first
+    type: llm
+    focus: trace
+    criteria: |
+      Pass if the swallowed failure in `submitWageBill` (the empty `catch` around `client.post`) is the first problem the final message reports. Fail if it is missing or comes after another finding.
   - name: missing-failure-test
     type: llm
     focus: trace
     criteria: |
       The only test of `submitWageBill` uses a client whose `post` always succeeds.
       Pass if the final message says the failure path is untested, either as a finding or inside the bug's Fix, and suggests a test with a client whose `post` rejects, checking that hours are kept or the error reaches the caller. Fail otherwise.
+  - name: format
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

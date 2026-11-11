@@ -2,7 +2,7 @@
 
 Does the code do what its callers assume, for every input they can send, including the ones today's data never sends. Each candidate is traced on a concrete input before it becomes a finding.
 
-- **Holds only today.** Code that is right because a constant is 1, a list has one element, a level is the only level, or an enum has its current members. Name the constant or data that makes it pass, and what breaks when it changes: a loop that ignores its index, a lookup that returns the first match, a height that assumes one floor. Propose the real handling or an assertion that fails loudly when the assumption breaks.
+- **Holds only today.** Code that is right because a constant is 1, a list has one element, a level is the only level, or an enum has its current members. Name the constant or data that makes it pass, and what breaks when it changes: a loop that ignores its index, an index or field the code is handed and never reads, a lookup that returns the first match, a height that assumes one floor. Propose the real handling or an assertion that fails loudly when the assumption breaks.
 - **Two definitions of one rule.** A fact computed in two places (a count, a threshold, a "can this happen" check) with different conditions in each, so the two can disagree. Trace one input through both.
 - **Edges.** Empty, one, the boundary value, the last index, negative, zero, the maximum: for each loop and slice, say what happens at the ends.
 - **Order of operations.** A fallible step before a branch that doesn't need it; a check after the write it should guard; a state read before the update that changes it.

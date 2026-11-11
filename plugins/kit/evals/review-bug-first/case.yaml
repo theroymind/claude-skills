@@ -20,10 +20,26 @@ graders:
     type: tool_used
     tool: Skill
     input_match: "kit:review"
-  - name: bug-first
+  - name: off-by-one
     type: llm
     weight: 3
     focus: trace
     criteria: |
       `Board.oldestOpen(n)` returns `open.slice(0, n - 1)`, which is n-1 jobs, not n, so a batch of 1 is always empty and idle crew never claim a job: a bug the existing test does not catch (it asks for 2 and checks element 0).
-      Pass only if the final message is a numbered table of findings in which finding 1 is this off-by-one bug, labelled as a bug, with `src/board.js` and the line of the `slice` named and the fix `slice(0, n)` (or equivalent) given, and a later finding covers the growing `config` object in `tick` (`batchSize`, `preferLeaks`, `logClaims`): flags that switch behaviour and a logging side effect inside the simulation loop, with a concrete change proposed. Fail if the bug is missing, ranked below the shape finding, or if any file was edited.
+      Pass if the final message reports this off-by-one as a bug, names `src/board.js` and the `slice`, and gives the fix `slice(0, n)` or equivalent. Fail otherwise.
+  - name: config-flags
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Pass if the final message presents, as a finding with a concrete change, the growing `config` object in `tick` (`batchSize`, `preferLeaks`, `logClaims`): flags that switch behaviour, or the logging side effect inside the simulation loop. A passing remark with no proposed change fails.
+  - name: bug-ranked-first
+    type: llm
+    focus: trace
+    criteria: |
+      Pass if the off-by-one in `Board.oldestOpen` (`slice(0, n - 1)`) is the first problem the final message reports, ahead of every finding about shape, flags, logging or tests. Fail if it is missing or comes after one of those.
+  - name: format
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

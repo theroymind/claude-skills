@@ -26,12 +26,16 @@ graders:
     focus: trace
     criteria: |
       The repo has a review profile at `.claude/kit/review.md` that adds `docs/money.md` as a lens for `src/**`. That rule says money is whole cents and a fraction must be rounded with `Math.round` where it appears.
-      The change adds `src/bonus.js`, whose `bonus` returns `wage * hoursWorked * 0.15`, a fraction of a cent for most wages (1500 * 1 * 0.15 = 225 is whole, but 1234 * 1 * 0.15 = 185.1 is not), and adds it to the total in `wages`.
-      Pass only if the final message is a numbered table of findings in which one finding names `src/bonus.js` (or the `bonus(crew)` call in `src/payroll.js`), says the bonus can hold a fraction of a cent, cites `docs/money.md` or the money rule, and proposes rounding with `Math.round` in `bonus`.
-      Fail if any file was edited.
+      The change adds `src/bonus.js`, whose `bonus` returns `wage * hoursWorked * 0.15`, a fraction of a cent for most wages, and adds it to the total in `wages`.
+      Pass if the final message presents, as a finding, that the bonus (in `src/bonus.js`, or the `bonus(crew)` call in `src/payroll.js`) can hold a fraction of a cent, cites `docs/money.md` or the money rule, and proposes rounding with `Math.round` in `bonus`. Fail otherwise.
   - name: anchored
     type: llm
     focus: trace
     criteria: |
       `perMinute` in `src/payroll.js` divides cents by 60 and returns a fraction, but it is unchanged by this diff: it predates the change.
-      Pass if `perMinute` is absent from the findings table. Mentioning it on a follow-up or "seen, no action" line below the table is fine. Fail if it appears as a numbered finding.
+      Pass if the final message does not present `perMinute` as a problem this change introduced: it is absent, or it is set apart as pre-existing, a follow-up or "seen, no action". Fail if it sits among the change's findings with nothing saying it predates the change.
+  - name: format
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

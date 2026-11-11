@@ -26,19 +26,36 @@ graders:
     type: tool_used
     tool: Skill
     input_match: "kit:review"
-  - name: findings
+  - name: reaching-in
     type: llm
-    weight: 3
+    weight: 2
     focus: trace
     criteria: |
-      Pass only if the final message is a numbered table of findings, each with a file and line reference and a concrete change to make, and the table includes all three of:
-      - crew.js reaching into the board's private `_jobs` array (coupling to board internals); the suggested change adds an operation on Board rather than reading `_jobs`.
-      - the `urgent` boolean parameter on `assign` switching between two unrelated behaviours.
-      - `wagesByJob` doing a `jobs.find` inside the loop over crews (a list lookup per crew, quadratic at 5,000 crew), with a map or index suggested.
-      Also required: the `wages` import in crew.js, which creates a `crew → payroll` dependency against the documented direction (or is unused), is mentioned either as a finding or as a note.
-      Fail if any finding is fabricated (names a problem not present in the code), or if the message edits files or claims to have fixed anything.
-  - name: asks-numbers
+      Pass if the final message presents, as a finding, that crew.js reads the board's private `_jobs` array (coupling to board internals), and proposes an operation on Board instead of reading `_jobs`. Fail otherwise.
+  - name: flag-parameter
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Pass if the final message presents, as a finding, that the `urgent` boolean parameter makes `assign` switch between two different behaviours, and proposes removing the flag or splitting the function. A finding that only reports a bug inside the urgent branch, without naming the flag as the problem, fails.
+  - name: lookup-in-loop
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Pass if the final message presents, as a finding, that `wagesByJob` calls `jobs.find` inside the loop over crews (a list lookup per crew, at 5,000 crew), and proposes a map or index built once. Fail otherwise.
+  - name: reversed-import
     type: llm
     focus: trace
     criteria: |
-      Pass if the final message ends by asking which findings to apply by number (for example "Reply with the numbers to apply") and opens no multiple-choice dialog in that turn.
+      Pass if the final message says, as a finding or a note, that the `wages` import in crew.js is unused or makes crew depend on payroll against the documented direction. Fail otherwise.
+  - name: no-invented-problem
+    type: llm
+    focus: trace
+    criteria: |
+      The whole change is two files: src/crew.js (an unused `wages` import, `tick` reading `board._jobs`, and `assign` with an `urgent` flag whose urgent branch sorts `board._jobs` in place and takes element 0 without checking `claimedBy`) and src/payroll.js (`wagesByJob`, which calls `jobs.find` per crew and books a crew's total `hoursWorked` under its current job's kind). Fail only if a finding describes code that this description and the file contents in the trace show is not there. Findings about missing tests, and judgement calls about severity, are not invented. When unsure, pass.
+  - name: format
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

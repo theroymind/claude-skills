@@ -14,6 +14,6 @@ The extra items `review` walks when a change touches browser UI code: React, Vue
 
 - **Scattered state.** One feature's state and behaviour spread across many small hooks, composables, services or stores that each component wires together. The signs are a component calling several of the feature's hooks, hooks taking each other's return values as arguments, and the same set of calls repeated in sibling components. The component has become the owner by accident, and every consumer repeats the wiring. Name the concept they share and propose one hook or composable with a small interface, or a store scoped to the feature and provided by its root component: a zustand store in context, a Pinia store, or an Angular service provided at that component.
 
-## Cheap
+## Performance
 
 - **Query per row.** A row, card or list-item component that runs its own query makes one request per item its parent renders, an N+1 split across files. Fetch the fields in the parent's list query, as a fragment the row declares, and pass each row its slice.

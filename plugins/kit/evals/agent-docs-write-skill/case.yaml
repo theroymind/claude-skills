@@ -1,0 +1,76 @@
+schema_version: "1.1"
+name: agent-docs-write-skill
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 30
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Write, Edit, Skill]
+  prompt: |
+    Write a project skill at .claude/skills/release/SKILL.md for cutting a release of this repo. I'll only ever run it myself by typing /release, nothing else needs to reach it.
+
+    Two things you won't find in the repo: the publish workflow has shipped an empty changelog twice, so the "Unreleased" heading in CHANGELOG.md has to be renamed to the new version number, with a fresh empty "Unreleased" above it, in a commit of its own before the release script runs. And the release isn't finished when the tag is pushed: the publish workflow fails about one time in five on an npm registry timeout, and it needs re-running until the new version shows on npm.
+
+    Nobody is around to answer questions, so make the calls yourself and write the file.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: "kit:agent-docs"
+  - name: wrote-skill
+    type: tool_used
+    tool: Write
+    min: 1
+    arm: both
+  - name: invocation
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Judge the final contents of .claude/skills/release/SKILL.md as written in the trace. The user said only they will run the skill, by typing its name.
+      Pass if the frontmatter sets `disable-model-invocation: true` and the `description` is a short plain summary of what the skill does, with no "Use when ..." clause or list of trigger phrases. Fail if `disable-model-invocation` is missing or false, or the description lists triggers.
+  - name: layout
+    type: llm
+    weight: 2
+    focus: trace
+    criteria: |
+      Judge only the structure of the final .claude/skills/release/SKILL.md as written in the trace, not its content.
+      Pass if all of these hold: a `# Release` title followed by an intro of at most three sentences; a `## Steps` section holding one numbered list whose items each open with a bold verb or short bold verb phrase (`1. **Verb.** text`); and a `## Done when` section as the last section of the file. Fail if any is missing, if the steps are spread over several headed phases, or if `## Done when` is not last.
+  - name: gotchas-kept
+    type: llm
+    weight: 2
+    focus: trace
+    arm: both
+    criteria: |
+      Judge the final .claude/skills/release/SKILL.md as written in the trace.
+      Pass if it carries both facts the user gave that the repo doesn't show: (a) before the release script runs, the "Unreleased" heading in CHANGELOG.md is renamed to the new version, a fresh empty "Unreleased" is added above it, and that goes in its own commit; and (b) the publish workflow can fail on an npm registry timeout and is re-run until the new version shows on npm. Fail if either is missing or changed in meaning.
+  - name: done-when-checkable
+    type: llm
+    focus: trace
+    arm: both
+    criteria: |
+      Judge the final .claude/skills/release/SKILL.md as written in the trace.
+      Pass if the skill states when the release is finished as a condition someone can check by looking: the new version showing on npm (naming a command such as `npm view tidepool version` is enough, and so is the publish workflow run being green together with the version on npm). Fail if it stops at the tag being pushed, or the finish is vague ("release complete", "everything looks good").
+  - name: no-restated-environment
+    type: llm
+    weight: 2
+    focus: trace
+    arm: both
+    criteria: |
+      Judge the final .claude/skills/release/SKILL.md as written in the trace. The repo already holds scripts/release.sh (lint, test, build, `npm version`, push with tags), the `scripts` block of package.json, and .github/workflows/publish.yml.
+      Pass if the skill runs the release through `npm run release -- <patch|minor|major>` (or scripts/release.sh) and leaves the script's inner steps to the script. One clause saying what the script does is fine. Fail if it lists the script's inner commands as steps of its own, repeats the package.json scripts as a command reference, or walks through the contents of publish.yml.
+  - name: no-ops
+    type: llm
+    weight: 2
+    focus: trace
+    arm: both
+    criteria: |
+      Judge the final .claude/skills/release/SKILL.md as written in the trace.
+      Fail if it holds any of: generic advice that would apply to any task ("be careful", "double-check your work", "follow best practices", "make sure tests pass" stated apart from the release script that already runs them); a section of general background on releases, semantic versioning or changelogs; a list of prohibitions ("never", "do not", "avoid") that gives no positive instruction alongside; or emphasis in capitals such as IMPORTANT, MUST, NEVER or ALWAYS. A single guardrail that names what to do instead is fine. Pass otherwise.
+  - name: short
+    type: llm
+    focus: trace
+    arm: both
+    criteria: |
+      Judge the final .claude/skills/release/SKILL.md as written in the trace. Pass if the file, frontmatter included, is 40 lines or fewer. Fail if it is longer.

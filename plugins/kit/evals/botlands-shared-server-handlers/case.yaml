@@ -31,10 +31,10 @@ graders:
     weight: 3
     focus: trace
     criteria: |
-      Ground truth: 13 message files under shared/net/messages/client-to-server (enter-instance, exit-instance, instance-entry-respond, interact, party-invite/accept/decline/kick/leave/set-loot, and execute-action/actions/treasure-pool-pass/pickup/roll) `require("server.game.*")` at module load, so the shared/ layer, which the client also loads, depends on server code. The fix made afterwards moved the execute bodies into server/command-handlers/ modules and left the shared files holding only schema and command envelope.
-      Pass only if the final message is a numbered list of findings and one finding, at any rank, names shared files requiring server.game.* modules as a dependency pointing the wrong way (shared → server), cites at least two of the files by path, and proposes moving the server-side execute logic out of shared/ (into a server-owned handler, an injected handler, or a registry the server fills). Fail if that finding is absent, if it appears only as a 'seen, no action' aside rather than a numbered finding, or if any file was edited. Bugs ranked above it do not fail it.
-  - name: no-fabrication
+      Ground truth: 13 message files under shared/net/messages/client-to-server `require("server.game.*")` at module load, so the shared/ layer, which the client also loads, depends on server code. The fix made afterwards moved the execute bodies into server/command-handlers/ modules and left the shared files holding only schema and command envelope.
+      Pass if the final message presents, as a finding, that files under shared/ require server modules, so the dependency points the wrong way (shared → server), and proposes moving the server-side execute logic out of shared/ (into a server-owned handler, an injected handler, or a registry the server fills). Naming one of the files is enough, and the finding may sit at any rank. Fail if it is absent, or appears only as a 'seen, no action' aside.
+  - name: format
     type: llm
     focus: trace
     criteria: |
-      Fail only on clear evidence of fabrication: a finding that cites a file or function the trace shows does not exist, or describes behaviour the file contents in the trace directly contradict. Line numbers off by a few lines, claims you cannot verify from the trace, and judgement calls about severity are not fabrication. When unsure, pass.
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

@@ -1,12 +1,12 @@
 ---
 name: review
-description: Reviews a change or module for bugs, shape and cost through four lenses (correct, modular, composed, cheap) and returns ranked findings, no edits. Use on a diff, a PR, a branch or a module when the user asks for a review, a second opinion on structure or approach, or whether a change fits the architecture; `implement` runs it once on a finished feature that has a task marked for review.
+description: Reviews a change or module for bugs, shape and cost through four lenses (correct, modular, composed, performance) and returns ranked findings, no edits. Use on a diff, a PR, a branch or a module when the user asks for a review, a second opinion on structure or approach, or whether a change fits the architecture; `implement` runs it once on a finished feature that has a task marked for review.
 argument-hint: [diff | PR | branch | path]
 ---
 
 # Review
 
-Reads a change the way a second engineer would and returns **findings**: each one located, verified in the code, and paired with the concrete move that fixes it. The review changes nothing; the caller decides what to apply. It looks for bugs (does the code do what its callers assume, on every input they can send?), shape (is the code modular and composed?) and cost (what does it do at scale?). To keep the reading out of a busy context, dispatch a `kit:reviewer` agent with the target instead of reviewing inline; `implement` always does.
+Reads a change the way a second engineer would and returns **findings**: each one located, verified in the code, and paired with the concrete move that fixes it. The review changes nothing; the caller decides what to apply. It looks for bugs (does the code do what its callers assume, on every input they can send?), shape (is the code modular and composed?) and cost (what does it do at scale?). Review inline. Dispatch a `kit:reviewer` agent with the target only when the context already holds other work the reading would crowd; `implement` always does. A finding an agent you dispatched by hand sends back enters your table once it passes step 4 in your own reading.
 
 ## Lenses
 
@@ -15,15 +15,15 @@ Each lens is a catalogue of what to look for, in its own file. Read the file for
 - [Correct](references/correct.md): does the code do what its callers assume, for every input they can send, including the ones today's data never sends.
 - [Modular](references/modular.md): one owner per concept, dependencies one way, contracts at the boundaries.
 - [Composed](references/composed.md): small parts assembled at the call site, over one big part configured by flags.
-- [Cheap](references/cheap.md): static reasoning about what the code does at scale, no profiling.
+- [Performance](references/performance.md): static reasoning about what the code does at scale, no profiling.
 
 ## Steps
 
-1. **Scope.** Take the target from `$ARGUMENTS`: a diff, a PR number, a branch, or a path. When the target is a pull request or merge request, follow [pull requests](references/pull-request.md) first; it sets up the worktree, the ticket and the readiness checks. With no target, review the working tree against the base branch (`git diff <base>...HEAD` plus uncommitted changes). Read `git diff --stat`, then every hunk. Then read past the diff: each changed public surface's callers and callees, far enough to see every boundary the change crosses. If the change belongs to a feature or ticket, read it; its acceptance criteria, types and boundaries are the contract the change is held to. When the target is a module rather than a change, list what it owns before reading for problems: each group of functions and the state it keeps. Done when every changed file and every boundary it crosses has been read.
+1. **Scope.** Take the target from `$ARGUMENTS`: a diff, a PR number, a branch, or a path. When the target is a pull request or merge request, follow [pull requests](references/pull-request.md) first; it sets up the worktree, the ticket and the readiness checks. With no target, review the working tree against the base branch (`git diff <base>...HEAD` plus uncommitted changes). Read `git diff --stat`, then every hunk. Then read past the diff: each changed public surface's callers and callees, far enough to see every boundary the change crosses. If the change belongs to a feature or ticket, read it; its acceptance criteria, types and boundaries are the contract the change is held to. When the target is a module rather than a change, list what it owns before reading for problems: each group of functions and the state it keeps. A list of three or more groups is a Modular candidate, which the report carries as a finding or as a "Seen, no action" line with its reason. Done when every changed file and every boundary it crosses has been read.
 2. **Load the profile.** Find the project's review profile at the location in [artifacts](../../references/artifacts.md) and apply it as [profile](references/profile.md) says. With none, the four lenses are the whole review. Then, for each changed file whose path matches a kit [language rule](../../rules/) by its `paths` frontmatter, read the project's copy in `.claude/rules/kit/` if it has one, else the kit's; each one is an extra lens. When the change touches browser UI code (a React, Vue, Angular or Svelte component, template, hook, composable, service or store), read [web frontend](references/web-frontend.md); its sections join the lenses of the same name. Done when every file the profile names for the changed paths, every matching language rule, and the web frontend reference when it applies, have been read.
-3. **Look through each lens.** Walk the change once per lens (Correct, Modular, Composed, Cheap, each with its web frontend items when they apply, then each language rule and each lens the profile adds) and write down every candidate, with the line that triggered it. The Correct pass is a hunt, not a glance: for each procedure, pick the inputs its callers can send and the ones today's data never does, and follow them through.
+3. **Look through each lens.** Walk the change once per lens (Correct, Modular, Composed, Performance, each with its web frontend items when they apply, then each language rule and each lens the profile adds) and write down every candidate, with the line that triggered it. The Correct pass is a hunt, not a glance: for each procedure, pick the inputs its callers can send and the ones today's data never does, and follow them through.
 4. **Verify.** Every candidate passes all four checks or is dropped; the review's value is that every finding is real.
-   - **Real.** Confirm the problem in the code: trace a concrete call path or input that hits it. For a cost candidate, name the scale at which it matters (per frame, per request, per row, n of what).
+   - **Real.** Confirm the problem in the code: trace a concrete call path or input that hits it. For a cost candidate, name the scale at which it matters (per frame, per request, per row, n of what). A candidate that only a run you can't make would confirm goes in a note under the table that says what would confirm it; a Bug is always traced.
    - **Introduced.** Read the finding's lines in the diff hunk, which shows what the change put there; the file alone cannot. A problem on a line the change left alone is a Follow-up. Code the change deleted is cited by its old line (`file.js:old 44`). A comment the change made false is anchored to the line that made it false.
    - **Fix resolves.** Every identifier in the Fix exists where the fix puts it.
    - **Not settled.** A finding that reverses a decision already recorded for this work (the feature doc, the plan, the ticket, or where the profile says decisions live) is dropped.
@@ -42,7 +42,7 @@ Each lens is a catalogue of what to look for, in its own file. Read the file for
 
 ## Findings
 
-One table, ranked and numbered, so the caller can answer with numbers. Size is the size of the fix: S (a line or two), M (one function or file), L (several files or a boundary). Issue is the problem and its consequence in one sentence; Fix is the move in one sentence. A finding that needs more gets a short note under the table, keyed by its number.
+One table, ranked and numbered, so the caller can answer with numbers. Size is the size of the fix: S (a line or two), M (one function or file), L (several files or a boundary). Issue is the problem and its consequence in one sentence; Fix is the move in one sentence. A finding that needs more gets a short note under the table, keyed by its number. A finding that spans several files or several groups of functions always gets one, listing each file, or each group with its functions.
 
 ```markdown
 ## Findings

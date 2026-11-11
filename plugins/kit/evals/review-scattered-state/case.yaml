@@ -25,11 +25,15 @@ graders:
     weight: 3
     focus: trace
     criteria: |
-      The change adds `src/cart/CartDrawer.jsx`, which repeats `CartPage`'s wiring of four cart hooks: `useCartItems`, then `useCartTotals(items)`, then `useCartDiscount(subtotal)`, then `useCartCheckout(items, total, code)`. Each hook takes the previous one's results. Because each component calls `useCartItems` itself, the drawer gets its own empty `useState` list and never sees the page's items, and the drawer's discount code is always empty.
-      Pass only if the final message is a numbered table of findings in which one finding names the cart's state being split across these hooks and wired again in each component, and proposes one cart hook with a small interface or a cart store shared by both components (a context-provided store, zustand, or similar).
-      Fail if that finding is absent, or if any file was edited.
+      The change adds `src/cart/CartDrawer.jsx`, which repeats `CartPage`'s wiring of four cart hooks: `useCartItems`, then `useCartTotals(items)`, then `useCartDiscount(subtotal)`, then `useCartCheckout(items, total, code)`. Each hook takes the previous one's results. Because each component calls `useCartItems` itself, the drawer gets its own empty `useState` list and never sees the page's items.
+      Pass if the final message presents, as a finding, that the cart's state is split across these hooks and wired again in each component, and proposes one cart hook with a small interface or a cart store shared by both components (a context-provided store, zustand, or similar). Fail if the finding is absent.
   - name: shared-state-bug
     type: llm
     focus: trace
     criteria: |
       Pass if the final message says, as a bug, that `CartDrawer` calls `useCartItems` separately and so shows an empty cart (or a cart separate from the page's), with its own empty discount code. Fail otherwise.
+  - name: format
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.

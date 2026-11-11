@@ -1,4 +1,4 @@
-# Cheap
+# Performance
 
 Static reasoning about what the code does at scale. Every finding names the scale that makes it matter. A finding whose fix is a trade-off recommends measuring rather than asserting.
 
