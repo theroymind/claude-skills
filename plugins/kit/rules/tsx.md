@@ -29,10 +29,10 @@ How to write React components and hooks that render once per change and read as 
 
 - **One job.** Describe the component in one sentence without "and". Length alone is not the test: a long table that renders a table is fine.
 - **Split when the JSX stops reading as an outline**: nesting past four levels, five or more styled elements in one return, or the same markup shape written twice with different data. Each region becomes a named subcomponent in its own folder under the parent, with its styles beside it, and the parent's return reads as the list of parts.
-- **Pass content, don't configure it.** Take `children` or named slots (`header`, `footer`) instead of flags. A boolean that swaps which elements render is structure passed through a flag. A generic name (`Card`, `Panel`, `Row`) with content-shaped props (`label`, `content`, `icon`) or an internal `renderX` that picks the element is a slot the caller should own.
+- **Pass content, don't configure it.** Take `children`, named slots or compound parts instead of props that decide what renders. A prop that sets a region's text, picks which elements appear, or sets the state of a child it renders (a title, a description, a button's `disabled`) is structure passed through a prop. The caller should render that part itself. A generic name (`Card`, `Panel`, `Row`) with content-shaped props (`label`, `content`, `icon`) or an internal `renderX` that picks the element is a slot the caller should own.
 - **Props say what the component does**, not where the caller is: `showSummary`, not `isOnReviewPage`.
-- **Four props is a question.** Not counting `children` and passthroughs like `className`: some travel together as one object, or the component has two jobs.
-- **Compound components** (`<Modal.Header>`, `<Modal.Body>`) when the parts always go together and callers vary their content. Overkill for one or two slots.
+- **Judge props by what they do, not how many there are.** A prop that feeds behavior the component owns is fine, such as a focus key, an id it loads data for, or a handler on its own input. A prop that shapes the rendered output means that region is a part the caller should compose.
+- **Prefer compound components** (`<Modal.Header>`, `<Modal.Body>`, `<Modal.Actions>`) for any component with several regions. The parent owns shared state and behavior and passes them to its parts through context. The caller assembles the parts and sets each one's content and state directly.
 - **Each conditional branch is one line**: `{isEmpty && <ListEmpty />}`, not a large inline block.
 - **Hooks or compound components over render props** and function children, which nest badly and hide the structure.
 
