@@ -72,8 +72,11 @@ The gates are the repo's test and check commands. Run them only on code no run h
 ## Feature review
 
 1. Mark the feature in review.
-2. Dispatch the reviewers at once, each a `kit:reviewer` with the repo path, the feature ref, the feature's commit range, and the one lens it walks: Correct, Modular, Composed, Cheap, plus one more for the language rules and the lenses the project's review profile adds, when the change has any.
-3. Merge the findings, drop duplicates, and rank them.
+2. Dispatch the reviewers at once, each a `kit:reviewer` with the repo path, the feature ref, the feature's commit range, and the lenses it walks:
+   - **Correct**, alone.
+   - **Shape**: Modular and Composed, plus the language rules and the lenses the project's review profile adds, when the change has any.
+   - **Cheap**, alone when the change touches code that runs per frame, per request or per row. Otherwise the Shape reviewer walks it too.
+3. Merge the findings into one ranked list, one row per issue. Where two reviewers give different fixes for the same issue, or two findings contradict, read the code they cite, pick one, and give the reason in the Report.
 4. Fix the ones worth acting on with fresh implementors in parallel, one per group of findings that share no files, or yourself when small. Run the gates, and commit the fixes with the feature's `Ticket:` trailer.
 5. Set `review=done` on every task the review covered and start the feature again.
 6. Report the findings, what was fixed and what was left, and ask for approval as in step 5 of Steps.

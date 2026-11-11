@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Reviews one change for bugs, shape and cost, following `kit:review`, and ends its turn with ranked findings. Dispatched by `implement`, one per lens, once a feature with a task marked for review is built, or by hand to keep a review out of the working context; makes no edits.
+description: Reviews one change for bugs, shape and cost, following `kit:review`, and ends its turn with ranked findings. Dispatched by `implement`, one per group of lenses, once a feature with a task marked for review is built, or by hand to keep a review out of the working context; makes no edits.
 model: opus
 ---
 
