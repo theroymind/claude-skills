@@ -19,7 +19,7 @@ Compare the author with the user (`gh api user`, or `glab api user`).
 
 ## Large changes
 
-Past about 300 changed lines, or across several layers, split the lenses across `kit:reviewer` agents: one with Correct and the profile's lenses, one with Modular, Composed and Performance. Give each the worktree path, the ticket's criteria and its lenses. Run at most two at a time and wait for both before going on. Merge their findings, collapsing two on the same line and concern into one, then run Verify on every merged finding yourself: an agent's line number is a claim.
+Past about 300 changed lines, or across several layers, split the lenses across `kit:reviewer` agents: one with Correct and the profile's lenses, one with Modular, Composed and Performance. Give each the worktree path, the ticket's criteria and its lenses. Run at most two at a time and wait for both before going on. Merge their findings, collapsing two on the same line and concern into one, then run Verify on every merged finding yourself: an agent's line number is a claim. The merged report's Lenses line joins both agents' Lenses lines, so a lens neither agent walked shows up as missing.
 
 ## Report
 

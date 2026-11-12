@@ -39,3 +39,8 @@ graders:
     focus: trace
     criteria: |
       Judge only the layout of the final message, not whether its findings are right. Pass if it has a numbered table of findings whose rows each name a file and a concrete change, and it ends by asking which findings to apply by number. A report of no findings with a line on what was checked also passes.
+  - name: lenses-line
+    type: llm
+    focus: trace
+    criteria: |
+      Judge only whether the final message accounts for every lens. Pass if it has a Lenses line, or an equivalent list, that names each of Correct, Modular, Composed and Performance and the profile's `docs/money.md`, each with a finding number or a note on what was checked. Fail if any of those five is missing.
