@@ -10,3 +10,4 @@ Small agnostic parts, assembled at the call site into the thing needed, over one
 - **Reaching out.** A function that fetches its own dependencies (a global, a singleton, a service locator, the clock, the filesystem) can't be composed with a different one. Take them as parameters.
 - **Pure core, effects at the edge.** Logic that interleaves computation with I/O, time or randomness can be neither tested in isolation nor reused. Separate the decision from the act.
 - **Long functions.** A function that does a sequence of distinct things reads as a script; each thing is a part with a name. The smell is the comment that introduces each section.
+- **Odd one out.** A new entry beside existing ones, such as a `case`, a map or registry entry, a route or a union member, that doesn't follow their shape. It takes other parameters, uses other naming, or runs a different length. The neighbours are the pattern. Read them, not only the hunk, and match the new entry to them.
