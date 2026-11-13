@@ -28,7 +28,7 @@ For a quick fix (a few lines, nothing to decide), go straight to `build`.
 
 ## Evals
 
-Run `plugins/kit/evals/run.sh` with any `claude plugin eval` options, such as `--case 'review-*' --runs 1`. It judges with Sonnet, runs each case's scaffold, allows Bash, and puts the real `node` binary on `PATH`, since the eval sandbox cannot follow fnm's per-shell symlink. `git` inside a run needs a real binary ahead of `/usr/bin/git`, such as Homebrew's.
+Run `plugins/kit/evals/run.sh` with any `claude plugin eval` options, such as `--case 'review-*' --runs 1`. It judges with Sonnet, runs each case's scaffold, allows Bash, and puts the real `node` binary on `PATH`, since the eval sandbox cannot follow fnm's per-shell symlink. `git` inside a run needs a real binary ahead of `/usr/bin/git`, such as Homebrew's. The `botlands-*` and `odin-draw-live` cases scaffold from clones in `plugins/kit/evals/fixtures/` (`gh repo clone theroymind/botlands` and `theroymind/odin-proto` there), or from wherever `BOTLANDS_ARCHIVE` and `ODIN_ARCHIVE` point.
 
 ## Language rules
 

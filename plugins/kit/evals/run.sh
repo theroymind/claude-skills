@@ -12,5 +12,9 @@ git_binary="$(xcrun -f git 2>/dev/null || command -v git)"
 git_dir="$(dirname "$git_binary")"
 export PATH="$node_dir:$git_dir:$PATH"
 
+# Repositories the history-based cases scaffold from; see evals/fixtures/README.md.
+export BOTLANDS_ARCHIVE="${BOTLANDS_ARCHIVE:-$plugin_dir/evals/fixtures/botlands}"
+export ODIN_ARCHIVE="${ODIN_ARCHIVE:-$plugin_dir/evals/fixtures/odin-proto}"
+
 cd "$plugin_dir"
 exec claude plugin eval . --judge-model sonnet --scaffold --allow-tools Bash Write Edit --no-publish --trust-plugin "$@"
