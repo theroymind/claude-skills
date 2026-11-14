@@ -14,9 +14,9 @@ Builds the tasks `feature` wrote in batches of ready tasks, in parallel, commits
 2. **Build the batch** at once, each task by its `scope`:
    - `medium` or `large`: dispatch one `kit:implementor` per task (Dispatch), all before building anything yourself.
    - `small`: load `kit:build` with the Skill tool and build it yourself while the implementors run, ticking each criterion as soon as its code and tests pass.
-3. **Verify** once the batch's builds finish. Merge any worktrees back (Worktrees), then check each task from its report and its ticked criteria. Read its diff only where the report flags something, where a gate fails, or when its `review` is `none`, since the feature's reviewers read the rest. Untick any ticked criterion the change doesn't meet. Send gate failures back to the task's implementor, or fix them yourself on a small task, then verify again. When a criterion isn't met and the fix isn't obvious, report the gap and ask as a choice ([asking](../../references/asking.md)) before going on.
-4. **Commit** each task once, in its own commit. Tick any criterion the change meets that is still unticked, mark the task done, and commit the task's code and ticks together with a `Ticket: REF` trailer (Gates says which run counts). When `CLAUDE.md` says where the project documents its architecture, a change that moves a module's shape updates that doc in the same commit.
-5. **Report** the batch in the chat: per task, what changed, the decisions made, anything flagged, and what the user must check by hand, such as visuals or feel. Name each commit as `git show HASH` and each task by its show command. End the turn asking for approval as a review ([asking](../../references/asking.md)).
+3. **Verify** once the batch's builds finish. Check each task in its worktree from its report and its ticked criteria. Read its diff only where the report flags something, where a gate fails, or when its `review` is `none`, since the feature's reviewers read the rest. Untick any ticked criterion the change doesn't meet. Send gate failures back to the task's implementor, or fix them yourself on a small task, then verify again. When a criterion isn't met and the fix isn't obvious, report the gap and ask as a choice ([asking](../../references/asking.md)) before going on.
+4. **Commit** each task once, in its own commit, in its worktree. Tick any criterion the change meets that is still unticked, mark the task done, and commit the task's code and ticks together with a `Ticket: REF` trailer (Gates says which run counts). Then land the worktrees one at a time (Worktrees). When `CLAUDE.md` says where the project documents its architecture, a change that moves a module's shape updates that doc in the same commit.
+5. **Report** the batch in the chat: per task, what changed, the decisions made, anything flagged, and the open hand checks, each with the command that shows it. Name each commit as `git show HASH` and each task by its show command. End the turn asking for approval as a review ([asking](../../references/asking.md)).
 6. **Approve** from the reply. For changes to a task, start it again, then brief a fresh implementor that starts from `git show HASH`, or fix it yourself on a small task, then repeat from step 3 and commit the fix with the same trailer. On approval, go back to step 1 for the next batch; once the feature has no ready task left, go to step 7.
 7. **Review** the feature once, after its last task is approved, when any of its tasks has `review` `pending` (Feature review).
 8. **Finish the feature** once every task is done and the user confirms the feature's criteria: fold anything that must outlast the feature into the project's architecture docs, when it has them, delete the feature's doc and its tasks, and commit that as `Finish <feature>` with a `Ticket: REF` trailer.
@@ -32,7 +32,8 @@ The steps name tracker actions by verb. With tix they are the commands below; an
 | start | `tix start REF...` |
 | tick, untick | `tix tick REF N...`, `tix untick REF N...` |
 | unticked criteria | `tix ac ls --open REF` |
-| done | `tix done REF`, never forced: a criterion only the user can check is a finding for the Report |
+| done | `tix done REF`, never forced. A criterion that turns out to need the user's eye is reworded to start with `Hand check: ` (`tix ac set REF N TEXT`), which `done` passes over and prints |
+| open hand checks | `tix ac hand`, one `REF N TEXT` per line, each closed with `tix tick REF N` |
 | in review | `tix review FEATURE` |
 | set a property | `tix set REF review=done` |
 
@@ -40,7 +41,7 @@ The steps name tracker actions by verb. With tix they are the commands below; an
 
 - **One brief file per agent**, written outside the repo, such as `<scratchpad>/<task>.md`. The agent is given only that path.
 - **How it launches** follows the session. When the session's instructions say how to launch agents, such as in terminals of their own, launch that way, and the brief names a report file. Otherwise use the Agent tool, and the report is the agent's final message.
-- **One report, read once.** Wait for the whole batch's reports before Verify. Message an agent only with work, such as findings to fix: an acknowledgement wakes it for nothing.
+- **One report, read once.** Wait for the whole batch's reports before Verify, with `sh ${CLAUDE_SKILL_DIR}/await.sh REPORT...` as a background command when the reports are files. Message an agent only with work, such as findings to fix: an acknowledgement wakes it for nothing.
 - **A large task with independent parts** gets one implementor per part. A part that builds on another runs after it, and its brief says what the earlier part built.
 - **Tasks or parts that list the same file** build one after the other: the one more tasks depend on goes first, and the other joins the next batch.
 
@@ -58,21 +59,22 @@ The implementor already knows its method (`build`), leaves the tree uncommitted,
 
 ## Worktrees
 
-Agents building at once in the same repo each get a git worktree under `.claude/worktrees/` (`git worktree add -b <branch> .claude/worktrees/<task>`); add that folder to the repo's `.gitignore` first if it isn't there. A batch of one agent, or of agents in different repos, builds in the main tree. In Verify, merge the worktrees back one at a time and remove each.
+Every task builds in its own git worktree under `.claude/worktrees/`, a task built alone and one you build yourself included: `git worktree add -b <task> .claude/worktrees/<task>`, after adding that folder to the repo's `.gitignore` if it isn't there. The main tree stays free for the user and for other sessions, whose uncommitted edits would otherwise fail the gates or ride along in a commit.
+
+Land a committed task with `sh ${CLAUDE_SKILL_DIR}/land.sh <task> <gate command>`, one at a time. It rebases the task onto the main tree's branch, runs the gates when that branch moved since the task forked, fast-forwards, and removes the worktree and its branch. On a conflict or a failed gate it stops and says what to fix; fix it in the worktree and land again.
 
 ## Gates
 
 The gates are the repo's test and check commands. Run them only on code no run has covered:
 
-- An implementor runs them before it reports, so a task built alone in the main tree needs no second run before its commit.
-- After each worktree merge, run them yourself on the merged tree before the next merge: a merge is code no agent tested.
-- Never run them while another agent is mid-edit in the same tree, since that fails for nothing.
+- An implementor runs them before it reports, so its commit needs no second run.
+- `land.sh` runs them when it rebased a task onto commits its agent never tested.
 - When the repo's pre-commit hook runs the gates, the commit is the run for a small task you built yourself. Every commit goes through the hooks; a hook that is too slow is a finding for the Report.
 
 ## Feature review
 
 1. Mark the feature in review.
-2. Dispatch the reviewers at once, each a `kit:reviewer` with the repo path, the feature ref, the feature's commit range, and the lenses it walks:
+2. Dispatch the reviewers at once, each a `kit:reviewer` with the repo path, the feature ref, the feature's commits, and the lenses it walks. List the commits by their trailers, never from memory or a range, since other features land in between: `git log --reverse --format='%h %s' -E --grep='^Ticket: (FEATURE|TASK|TASK)$'` with the feature's ref and each of its tasks'.
    - **Correct**, alone.
    - **Shape**: Modular and Composed, plus the language rules and the lenses the project's review profile adds, when the change has any.
    - **Performance**, alone when the change touches code that runs per frame, per request or per row. Otherwise the Shape reviewer walks it too.
