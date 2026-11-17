@@ -15,7 +15,7 @@ feature → implement
 | `feature` | You want to plan a feature, or log an idea | A short feature doc and its tasks, each with a `scope` and a `review` flag |
 | `implement` | There are tasks to build | One commit per task: small tasks built in the session, medium and large ones by an implementor, then one review of the whole feature when a task asks for it |
 
-For a quick fix (a few lines, nothing to decide), go straight to `build`.
+For a quick fix (a few lines, nothing to decide), go straight to `build`. To find a system worth simplifying first, start with `refactor`: it picks one, weighs shapes for it and hands the chosen one to `feature`.
 
 ## Along the way
 
