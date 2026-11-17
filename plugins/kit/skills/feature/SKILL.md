@@ -33,6 +33,13 @@ One conversation that ends in two things: a feature doc anyone can read in a min
   - `## Description`: two to four sentences of prose for whoever builds it, saying what changes, why, the one decision that isn't obvious, and in half a sentence why it does or doesn't get a review. No lists.
   - `## Files`, when the project's tracker reads one (tix's `files_heading`): the paths it likely touches, one per item.
   - `## Acceptance criteria`: three to seven criteria, each one thing the agent building it can test, small enough to tick as soon as it lands, in roughly the order it gets built.
+- **Task wording.** A task is read by an agent with none of this conversation, so word it in the style of Simplified Technical English (ASD-STE100). The feature doc stays plain and casual.
+  - One word per concept: use the project glossary's term when it has one, and never swap in a synonym.
+  - Each criterion checks one thing in at most 20 words. Split a criterion that joins two checks with "and".
+  - A criterion states a result you can check, such as "`tix ready` lists the task", not an intention.
+  - A description sentence runs at most 25 words.
+  - No vague words, such as should, properly, correctly, robust, various, etc., as needed or if possible. Name the case instead.
+  - The tracker's wording rules win when it has them (tix's `wording` in `.tix/config.yml`), and its lint checks them.
 - **Criteria, not subtasks.** Ticked criteria are the progress a tracker's views show. Make a subtask only for a piece that needs its own dependency, its own review, or could be built in parallel.
 - **Idea.** A summary and free text. It becomes a feature once it's worked out.
 - **Lifetime.** A feature and its tasks live only while they're being built: `implement` deletes them once the feature is done, so the code, and any architecture docs the project keeps, stay the only truth.
