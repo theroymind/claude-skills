@@ -16,12 +16,13 @@ One conversation that ends in two things: a feature doc anyone can read in a min
    - the approach
    - how it fits the project's pillars, when it has them (a failing pillar cuts or softens the feature)
    - the types, modules and boundaries it adds or changes, sized against where the project is heading
+   - for a feature that adds a variant beside existing ones, such as a second way to run a session, a new payment method or another storage backend: the table and shape from [variants](../../references/variants.md)
 
    Done when you can predict the user's next three answers and nothing is left open.
 3. **Write the feature doc.** Use plain, casual words, in the sections of Notes, starting from the project's feature template when it has one.
 4. **Break it into tasks.** Each task is one slice (Slicing), starting from the project's task template when it has one. Write its description, files and criteria as Notes says. Set its dependencies, `scope` and `review` (Task sizing).
 5. **Save as drafts.** Write each note once, straight to the tracker as a draft, which keeps it out of `tix ready` until approved: for tix, `tix add --draft --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --draft --type task --parent FEATURE --description D --acceptance A... --file PATH... --set scope=S --set review=R --set summary=TEXT TITLE` and `tix dep`. Done when the tracker's lint passes on every draft. Without a tracker, go to step 6 and write the files at step 7.
-6. **Review.** Show the feature doc in full, then one line per task: id, title, `scope`, `review`, dependencies and summary. End the turn asking for approval as a review ([asking](../../references/asking.md)), naming `tix show REF` for a task's full text and offering to print any tasks the user names in full. Apply changes to the drafts in place (`tix set`, `tix ac set`, `tix dep`, `tix undep`), lint, and show the summary again, until the user approves. Without a tracker, show the doc and every task in full.
+6. **Review.** Show the feature doc in full, then the variants table when the feature has one, then one line per task: id, title, `scope`, `review`, dependencies and summary. End the turn asking for approval as a review ([asking](../../references/asking.md)), naming `tix show REF` for a task's full text and offering to print any tasks the user names in full. Apply changes to the drafts in place (`tix set`, `tix ac set`, `tix dep`, `tix undep`), lint, and show the summary again, until the user approves. Without a tracker, show the doc and every task in full.
 7. **Approve.** Move every draft to the project's open status (for tix, `tix set REF status=S`, with S the status key the config maps to `open`, such as `todo`). Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Commit the notes.
 
 ## Notes
