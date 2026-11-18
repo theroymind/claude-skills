@@ -1,6 +1,6 @@
 ---
 name: feature
-description: Plans a feature in one conversation, from research to a short feature doc and its tasks. Use when the user asks to plan, scope or design a feature, hands over a ticket URL to plan from, or wants to log an idea.
+description: Plans a feature in one conversation, from research to a short feature doc and its tasks. Use when the user asks to plan, scope or design a feature, hands over a ticket URL to plan from, has a vague idea to work out, or wants to log an idea.
 argument-hint: [feature, ask or ticket URL]
 ---
 
@@ -11,25 +11,26 @@ One conversation that ends in two things: a feature doc anyone can read in a min
 ## Steps
 
 1. **Research.** When the ask is a ticket URL or id from an outside tracker, read that ticket first with the session's tracker tools: its title, description and criteria become the ask, and its id and URL become the feature's external ref. Before asking anything, find what the ask touches: the project's intent and pillars, the features, ideas and tasks in progress near it, the architecture docs `CLAUDE.md` names for each module it would change, and that code and its recent commits. Read notes through the tracker `CLAUDE.md` names, such as `tix ls --all` and `tix docs ls`, then `tix context REF` on each note near the ask, and otherwise the files [artifacts](../../references/artifacts.md) locates. Done when you can name every note and file the feature overlaps or contradicts.
-2. **Talk it through.** Ask one question at a time with `AskUserQuestion` as a choice ([asking](../../references/asking.md)), with your best guess as the recommended option. Cover:
+2. **Align, when the ask is fuzzy.** When the ask leaves out who it's for, why it matters now, or what done looks like, and research doesn't answer them, pin down the intent first as [aligning](../../references/aligning.md) says. Done when the user has confirmed every line of it, Out of scope included.
+3. **Talk it through.** Ask one question at a time with `AskUserQuestion` as a choice ([asking](../../references/asking.md)), with your best guess as the recommended option. Cover:
    - who it's for and what they get
    - the approach
    - how it fits the project's pillars, when it has them (a failing pillar cuts or softens the feature)
    - the types, modules and boundaries it adds or changes, sized against where the project is heading
    - for a feature that adds a variant beside existing ones, such as a second way to run a session, a new payment method or another storage backend: the table and shape from [variants](../../references/variants.md)
 
-   Done when you can predict the user's next three answers and nothing is left open.
-3. **Write the feature doc.** Use plain, casual words, in the sections of Notes, starting from the project's feature template when it has one.
-4. **Break it into tasks.** Each task is one slice (Slicing), starting from the project's task template when it has one. Write its description, files and criteria as Notes says. Set its dependencies, `scope` and `review` (Task sizing).
-5. **Save as drafts.** Write each note once, straight to the tracker as a draft, which keeps it out of `tix ready` until approved: for tix, `tix add --draft --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --draft --type task --parent FEATURE --description D --acceptance A... --file PATH... --set scope=S --set review=R --set summary=TEXT TITLE` and `tix dep`. Done when the tracker's lint passes on every draft. Without a tracker, go to step 6 and write the files at step 7.
-6. **Review.** Show the feature doc in full, then the variants table when the feature has one, then one line per task: id, title, `scope`, `review`, dependencies and summary. End the turn asking for approval as a review ([asking](../../references/asking.md)), naming `tix show REF` for a task's full text and offering to print any tasks the user names in full. Apply changes to the drafts in place (`tix set`, `tix ac set`, `tix dep`, `tix undep`), lint, and show the summary again, until the user approves. Without a tracker, show the doc and every task in full.
-7. **Approve.** Move every draft to the project's open status (for tix, `tix set REF status=S`, with S the status key the config maps to `open`, such as `todo`). Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Commit the notes.
+   Skip what the intent from step 2 already settled. Done when you can predict the user's next three answers and nothing is left open.
+4. **Write the feature doc.** Use plain, casual words, in the sections of Notes, starting from the project's feature template when it has one.
+5. **Break it into tasks.** Each task is one slice (Slicing), starting from the project's task template when it has one. Write its description, files and criteria as Notes says. Set its dependencies, `scope` and `review` (Task sizing).
+6. **Save as drafts.** Write each note once, straight to the tracker as a draft, which keeps it out of `tix ready` until approved: for tix, `tix add --draft --type feature TITLE` (or the project's own name for its top type), with `--external-id ID --external-url URL` when the ask has an external ref, then `tix add --draft --type task --parent FEATURE --description D --acceptance A... --file PATH... --set scope=S --set review=R --set summary=TEXT TITLE` and `tix dep`. Done when the tracker's lint passes on every draft. Without a tracker, go to step 7 and write the files at step 8.
+7. **Review.** Show the feature doc in full, then the variants table when the feature has one, then one line per task: id, title, `scope`, `review`, dependencies and summary. End the turn asking for approval as a review ([asking](../../references/asking.md)), naming `tix show REF` for a task's full text and offering to print any tasks the user names in full. Apply changes to the drafts in place (`tix set`, `tix ac set`, `tix dep`, `tix undep`), lint, and show the summary again, until the user approves. Without a tracker, show the doc and every task in full.
+8. **Approve.** Move every draft to the project's open status (for tix, `tix set REF status=S`, with S the status key the config maps to `open`, such as `todo`). Without a tracker, write the files where [artifacts](../../references/artifacts.md) says. Commit the notes.
 
 ## Notes
 
 - **The template wins.** When the project has a template for a note type, its sections and the guidance written in them are the rules, and the bullets below fill in only what it leaves out.
 - **One job per part.** Nothing in a note says what another part already says. If a sentence in a description would pass as a criterion, make it one and cut it from the description.
-- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. `## Acceptance criteria` is a checklist of things you can see or test. Every check by hand goes here and starts with `Hand check: `, such as "Hand check: In the boss fight you see the camera glide over the mage's shoulder": the user confirms these when the feature finishes. Settle every question in the conversation, so the doc holds only answers.
+- **Feature doc.** `## Description` says what the user or player gets, why it fits, how it works (the types, where the code goes, what it reuses), and anything decided along the way, in prose of at most three short paragraphs. When step 2 ran, its Outcome, User and Why now feed the description, its Out of scope ends it in one sentence, and its Success becomes criteria. `## Acceptance criteria` is a checklist of things you can see or test. Every check by hand goes here and starts with `Hand check: `, such as "Hand check: In the boss fight you see the camera glide over the mage's shoulder": the user confirms these when the feature finishes. Settle every question in the conversation, so the doc holds only answers.
 - **Task.** A `feature` link to its feature, `scope`, `review`, its dependencies, and these sections:
   - `## Description`: two to four sentences of prose for whoever builds it, saying what changes, why, the one decision that isn't obvious, and in half a sentence why it does or doesn't get a review. No lists.
   - `## Files`, when the project's tracker reads one (tix's `files_heading`): the paths it likely touches, one per item.
